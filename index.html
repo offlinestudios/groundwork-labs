@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Groundwork Labs — Every business leaks money somewhere.</title>
+<meta name="description" content="Fixes for the money local businesses leak every week. Free for 30 days. Measured, not promised.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --ink:#131a17;
+  --ink-soft:#3c4643;
+  --muted:#5b6663;
+  --muted-2:#7d8884;
+  --faint:#9aa5a1;
+  --on-dark:#d9dfdc;
+
+  --page:#f6f8f7;
+  --canvas:#eef1f0;
+  --canvas-2:#f0f2f1;
+  --white:#fff;
+
+  --border:#e2e7e5;
+  --border-strong:#cfd7d4;
+  --divider-dark:#2a332f;
+
+  --green:#1f8a5b;
+  --green-hover:#14603f;
+  --green-light:#5ec698;
+  --green-tint:#e7f3ed;
+  --green-bar-soft:#9fc4b3;
+  --numeral:#d3ddd8;
+  --disabled:#b6bfbb;
+
+  --danger-bg:#fbeaea;
+  --danger-fg:#a33b3b;
+
+  --shadow-hero:0 24px 60px -24px rgba(19,26,23,0.45);
+  --shadow-lift:0 12px 32px -16px rgba(19,26,23,0.25);
+  --shadow-card:0 20px 48px -28px rgba(19,26,23,0.25);
+  --shadow-card-sm:0 16px 40px -28px rgba(19,26,23,0.30);
+
+  --maxw:1160px;
+  --pad-x:32px;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--canvas);
+  font-family:'Geologica',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+a{color:var(--green);text-decoration:none;}
+a:hover{color:var(--green-hover);}
+img,svg{display:block;}
+button{font:inherit;}
+::placeholder{color:var(--faint);opacity:1;}
+h1,h2,h3,p{margin:0;}
+
+:focus-visible{
+  outline:2px solid var(--green);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+.app{min-height:100vh;display:flex;flex-direction:column;}
+.screen{flex:1;background:var(--white);display:flex;flex-direction:column;}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+/* ============================================================
+   LAYOUT PRIMITIVES
+   ============================================================ */
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad-x);padding-right:var(--pad-x);}
+.wrap-narrow{max-width:900px;margin:0 auto;padding-left:var(--pad-x);padding-right:var(--pad-x);}
+.wrap-faq{max-width:760px;margin:0 auto;padding-left:var(--pad-x);padding-right:var(--pad-x);}
+.wrap-dash{max-width:1100px;margin:0 auto;}
+
+.rule-b{border-bottom:1px solid var(--canvas);}
+.rule-t{border-top:1px solid var(--canvas);}
+
+/* ============================================================
+   TYPE
+   ============================================================ */
+.eyebrow{
+  font-size:13px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--green);font-weight:600;
+}
+.eyebrow-quiet{
+  font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--muted-2);font-weight:500;
+}
+.h1{font-size:56px;line-height:1.06;font-weight:600;letter-spacing:-0.025em;text-wrap:pretty;}
+.h1-center{font-size:52px;line-height:1.08;font-weight:600;letter-spacing:-0.025em;text-wrap:pretty;}
+.h2{font-size:36px;font-weight:600;letter-spacing:-0.02em;text-wrap:pretty;}
+.h2-sm{font-size:34px;font-weight:600;letter-spacing:-0.02em;text-wrap:pretty;}
+.h2-lg{font-size:38px;font-weight:600;letter-spacing:-0.02em;text-wrap:pretty;}
+.lede{font-size:17px;line-height:1.55;color:var(--muted);font-weight:300;text-wrap:pretty;}
+.body{font-size:16px;line-height:1.6;color:var(--muted);font-weight:300;text-wrap:pretty;}
+.body-sm{font-size:15px;line-height:1.55;color:var(--muted);font-weight:300;}
+.micro{font-size:14px;color:var(--muted-2);}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border:none;border-radius:10px;font-weight:500;cursor:pointer;
+  text-align:center;text-decoration:none;
+  transition:background-color .15s ease,color .15s ease,border-color .15s ease;
+}
+.btn-primary{background:var(--green);color:#fff;}
+.btn-primary:hover{background:var(--green-hover);color:#fff;}
+.btn-outline{background:transparent;border:1px solid var(--border-strong);color:var(--ink);}
+.btn-outline:hover{border-color:var(--green);color:var(--green);}
+.btn-text{background:none;border:none;color:var(--ink-soft);font-size:14px;cursor:pointer;padding:6px 2px;}
+.btn-text:hover{color:var(--green);}
+
+.btn-nav{border-radius:9px;padding:11px 20px;font-size:14px;}
+.btn-hero{padding:15px 28px;font-size:16px;}
+.btn-hero-outline{padding:14px 26px;font-size:16px;}
+.btn-lg{padding:16px 32px;font-size:16px;}
+.btn-xl{padding:16px 32px;font-size:17px;}
+.btn-xxl{padding:17px 36px;font-size:17px;}
+
+/* ============================================================
+   BRAND
+   ============================================================ */
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-link{background:none;border:none;padding:0;cursor:pointer;color:inherit;display:flex;align-items:center;gap:10px;}
+.wordmark{font-weight:600;font-size:18px;letter-spacing:-0.01em;color:var(--ink);}
+.wordmark .labs{color:var(--green);font-weight:400;}
+.crumb-sep{color:var(--disabled);font-size:17px;}
+.crumb{font-size:17px;color:var(--muted);}
+
+/* ============================================================
+   SITE NAV
+   ============================================================ */
+.nav{
+  border-bottom:1px solid var(--border);background:var(--white);
+  position:sticky;top:0;z-index:40;
+}
+.nav-inner{
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--pad-x);height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-left{display:flex;align-items:center;gap:36px;}
+.nav-links{display:flex;gap:26px;font-size:14px;}
+.nav-links a{color:var(--ink-soft);}
+.nav-links a:hover{color:var(--green);}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.nav-burger{display:none;}
+.nav-menu{display:none;}
+
+/* ============================================================
+   HOME — HERO
+   ============================================================ */
+.hero{background:linear-gradient(180deg,var(--page) 0%,var(--white) 100%);border-bottom:1px solid var(--canvas);}
+.hero-inner{
+  padding-top:88px;padding-bottom:72px;
+  display:grid;grid-template-columns:1.1fr 0.9fr;gap:72px;align-items:center;
+}
+.hero-eyebrow{margin-bottom:18px;}
+.hero-h1{margin-bottom:22px;}
+.hero-copy{font-size:19px;line-height:1.55;color:var(--muted);font-weight:300;max-width:520px;margin-bottom:34px;text-wrap:pretty;}
+.hero-actions{display:flex;align-items:center;gap:16px;}
+.hero-micro{margin-top:20px;font-size:14px;color:var(--muted-2);}
+
+.metric-card{
+  background:var(--ink);border-radius:18px;padding:34px;color:var(--on-dark);
+  box-shadow:var(--shadow-hero);
+}
+.metric-card .eyebrow-quiet{margin-bottom:24px;}
+.metric-rows{display:flex;flex-direction:column;gap:18px;}
+.metric-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid var(--divider-dark);padding-bottom:16px;
+}
+.metric-row:last-child{border-bottom:none;padding-bottom:0;}
+.metric-label{font-size:14px;font-weight:300;}
+.metric-value{font-size:22px;font-weight:600;color:var(--green-light);}
+.metric-note{margin-top:26px;font-size:13px;line-height:1.5;color:var(--muted-2);}
+
+/* ============================================================
+   HOME — TRUST STRIP
+   ============================================================ */
+.trust{border-bottom:1px solid var(--canvas);background:var(--white);}
+.trust-inner{
+  padding-top:26px;padding-bottom:26px;
+  display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;
+  color:var(--faint);font-size:14px;font-weight:500;letter-spacing:0.02em;
+}
+
+/* ============================================================
+   HOME — PROBLEMS
+   ============================================================ */
+.problems{background:var(--page);}
+.problems-inner{padding-top:80px;padding-bottom:88px;}
+.section-head{max-width:560px;margin-bottom:44px;}
+.section-head .h2{margin-bottom:14px;}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.problem-card{
+  background:var(--white);border:1px solid var(--border);border-radius:14px;padding:26px;
+  display:flex;flex-direction:column;gap:12px;cursor:pointer;text-align:left;
+  font:inherit;color:inherit;
+  transition:box-shadow .15s ease,transform .15s ease;
+}
+.problem-card:hover{box-shadow:var(--shadow-lift);transform:translateY(-2px);}
+.problem-slug{font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--green);font-weight:600;}
+.problem-hook{font-size:17px;line-height:1.4;font-weight:500;letter-spacing:-0.005em;flex:1;text-wrap:pretty;color:var(--ink);}
+.problem-cta{font-size:14px;color:var(--green);font-weight:500;}
+
+/* ============================================================
+   HOME — HOW IT WORKS
+   ============================================================ */
+.how{background:var(--white);border-top:1px solid var(--canvas);}
+.how-inner{padding-top:80px;padding-bottom:88px;}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+.how-step{display:flex;flex-direction:column;gap:12px;}
+.how-num{font-size:44px;font-weight:600;color:var(--numeral);letter-spacing:-0.03em;line-height:1;}
+.how-step h3{font-size:19px;font-weight:600;}
+
+/* ============================================================
+   HOME — RESULTS BAND
+   ============================================================ */
+.results{background:var(--ink);color:#fff;}
+.results-inner{
+  padding-top:72px;padding-bottom:72px;
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+}
+.results-copy{font-size:16px;line-height:1.6;color:var(--faint);font-weight:300;text-wrap:pretty;}
+.results-inner .h2-sm{margin-bottom:16px;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center;}
+.stat-value{font-size:38px;font-weight:600;color:var(--green-light);line-height:1.1;}
+.stat-value .unit{font-size:22px;}
+.stat-label{font-size:13px;color:var(--faint);margin-top:6px;}
+
+/* ============================================================
+   FINAL CTA (light)
+   ============================================================ */
+.cta-light{background:var(--white);}
+.cta-light-inner{padding-top:80px;padding-bottom:80px;text-align:center;}
+.cta-light-inner .h2-sm{margin-bottom:14px;}
+.cta-light-inner .lede{margin-bottom:30px;}
+
+/* ============================================================
+   FOOTER (site)
+   ============================================================ */
+.footer{border-top:1px solid var(--border);background:var(--page);}
+.footer-inner{
+  padding-top:48px;padding-bottom:48px;
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;font-size:14px;
+}
+.footer-brand{display:flex;flex-direction:column;gap:12px;}
+.footer-brand .wordmark{font-size:16px;}
+.footer-tag{color:var(--muted-2);line-height:1.5;font-weight:300;}
+.footer-col{display:flex;flex-direction:column;gap:10px;}
+.footer-col-head{font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted-2);}
+.footer-col a{color:var(--ink-soft);}
+.footer-col a:hover{color:var(--green);}
+.footer-legal{border-top:1px solid var(--border);padding:18px var(--pad-x);text-align:center;font-size:13px;color:var(--faint);}
+
+/* ============================================================
+   FUNNEL PAGE
+   ============================================================ */
+.fnav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;background:none;border:none;padding:0;}
+.fnav-brand .wordmark{font-size:17px;}
+
+.fhero{background:linear-gradient(180deg,var(--page) 0%,var(--white) 100%);border-bottom:1px solid var(--canvas);}
+.fhero-inner{padding-top:88px;padding-bottom:64px;text-align:center;}
+.fhero-inner .h1-center{margin-bottom:22px;}
+.fhero-copy{
+  font-size:19px;line-height:1.6;color:var(--muted);font-weight:300;
+  max-width:620px;margin:0 auto 34px;text-wrap:pretty;
+}
+.fhero-micro{margin-top:18px;font-size:14px;color:var(--muted-2);}
+
+.agitate{border-bottom:1px solid var(--canvas);background:var(--white);}
+.agitate-inner{padding-top:72px;padding-bottom:72px;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+.agitate-item{display:flex;flex-direction:column;gap:10px;}
+.agitate-item h3{font-size:18px;font-weight:600;text-wrap:pretty;}
+
+.mech{background:var(--page);border-bottom:1px solid var(--canvas);}
+.mech-inner{padding-top:80px;padding-bottom:80px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.mech-inner .eyebrow{display:block;margin-bottom:14px;}
+.mech-inner .h2-sm{margin-bottom:18px;}
+.mech-steps{display:flex;flex-direction:column;gap:18px;font-size:16px;line-height:1.55;color:var(--ink-soft);}
+.mech-step{display:flex;gap:14px;}
+.mech-step-n{color:var(--green);font-weight:600;}
+.mech-step-t{font-weight:300;}
+
+.change-card{
+  background:var(--white);border:1px solid var(--border);border-radius:16px;padding:32px;
+  box-shadow:var(--shadow-card);
+}
+.change-card .eyebrow-quiet{margin-bottom:24px;}
+.change-rows{display:flex;flex-direction:column;gap:20px;}
+.change-head{display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px;}
+.change-head .k{color:var(--muted);}
+.change-head .v{font-weight:600;}
+.change-head .v.is-after{color:var(--green);}
+.change-track{height:12px;background:var(--canvas);border-radius:6px;overflow:hidden;}
+.change-fill{height:12px;border-radius:6px;}
+.change-fill.is-now{background:var(--disabled);}
+.change-fill.is-after{background:var(--green);}
+.change-sep{display:flex;align-items:center;gap:10px;color:var(--green);font-size:14px;font-weight:500;}
+.change-sep .line{flex:1;height:1px;background:var(--border);}
+.change-note{margin-top:24px;font-size:13px;line-height:1.5;color:var(--muted-2);}
+
+.report{border-bottom:1px solid var(--canvas);background:var(--white);}
+.report-inner{padding-top:80px;padding-bottom:80px;display:grid;grid-template-columns:0.9fr 1.1fr;gap:64px;align-items:center;}
+.report-card{background:var(--ink);border-radius:16px;padding:30px;color:var(--on-dark);}
+.report-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:16px;}
+.report-card-head .who{font-size:12px;color:var(--muted-2);}
+.report-rows{display:flex;flex-direction:column;gap:14px;font-size:14px;}
+.report-row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--divider-dark);padding-bottom:12px;}
+.report-row:last-child{border-bottom:none;padding-bottom:0;}
+.report-row .k{font-weight:300;}
+.report-row .v{font-weight:600;}
+.report-row .v.is-good{color:var(--green-light);}
+.report-copy .eyebrow{display:block;margin-bottom:14px;}
+.report-copy .h2-sm{margin-bottom:18px;}
+.report-copy .body + .body{margin-top:16px;}
+
+.faq{background:var(--page);border-bottom:1px solid var(--canvas);}
+.faq-inner{padding-top:80px;padding-bottom:80px;}
+.faq-inner .h2-sm{margin-bottom:36px;text-align:center;}
+.faq-list{display:flex;flex-direction:column;gap:14px;}
+.faq-item{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 26px;}
+.faq-item h3{font-size:16px;font-weight:600;margin-bottom:8px;}
+.faq-item p{font-size:15px;line-height:1.6;color:var(--muted);font-weight:300;}
+
+.cta-dark{background:var(--ink);color:#fff;}
+.cta-dark-inner{padding-top:88px;padding-bottom:88px;text-align:center;}
+.cta-dark-inner .h2-lg{margin-bottom:16px;}
+.cta-dark-copy{font-size:17px;line-height:1.6;color:var(--faint);font-weight:300;margin-bottom:34px;text-wrap:pretty;}
+.cta-dark-micro{margin-top:18px;font-size:14px;color:var(--muted-2);}
+
+
+/* ============================================================
+   SIGNUP
+   ============================================================ */
+.signup{
+  flex:1;background:var(--page);display:flex;align-items:flex-start;justify-content:center;
+  padding:72px var(--pad-x);
+}
+.signup-col{width:520px;max-width:100%;}
+.signup-brand{
+  display:flex;align-items:center;gap:10px;margin-bottom:28px;
+  background:none;border:none;padding:0;cursor:pointer;color:inherit;
+}
+.signup-brand .wordmark{font-size:16px;}
+.signup-brand .crumb-sep,.signup-brand .crumb{font-size:16px;}
+.signup-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:36px;}
+.signup-card h1{font-size:26px;font-weight:600;letter-spacing:-0.01em;margin-bottom:10px;}
+.signup-card .body-sm{margin-bottom:28px;}
+.form{display:flex;flex-direction:column;gap:18px;}
+.field{display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500;color:var(--ink);}
+.field input,.field select{
+  border:1px solid var(--border-strong);border-radius:9px;padding:12px 14px;
+  font:inherit;font-size:15px;font-weight:300;background:var(--white);color:var(--ink);
+  transition:border-color .15s ease;
+}
+.field input:focus,.field select:focus{border-color:var(--green);outline:none;box-shadow:0 0 0 3px rgba(31,138,91,0.12);}
+.submit{
+  border:none;border-radius:10px;padding:14px 24px;font-size:16px;font-weight:500;
+  background:var(--disabled);color:#fff;cursor:not-allowed;
+  transition:background-color .15s ease;
+}
+.submit.is-ready{background:var(--green);cursor:pointer;}
+.submit.is-ready:hover{background:var(--green-hover);}
+.form-micro{font-size:13px;color:var(--muted-2);text-align:center;}
+
+.confirm-card{
+  background:var(--white);border:1px solid var(--border);border-radius:16px;
+  padding:44px 36px;text-align:center;
+}
+.confirm-check{
+  width:52px;height:52px;border-radius:50%;background:var(--green-tint);color:var(--green);
+  display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 20px;
+}
+.confirm-card h1{font-size:24px;font-weight:600;margin-bottom:12px;text-wrap:pretty;}
+.confirm-card .body-sm{line-height:1.6;margin-bottom:28px;text-wrap:pretty;}
+.next-panel{
+  text-align:left;background:var(--page);border-radius:12px;padding:20px 24px;
+  display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--ink);
+}
+.next-panel .eyebrow-quiet{font-size:12px;letter-spacing:0.06em;}
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+.dash{flex:1;background:var(--canvas-2);padding:40px var(--pad-x) 80px;}
+.dash-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:8px;}
+.dash-head h1{font-size:26px;font-weight:600;letter-spacing:-0.01em;}
+.dash-meta{font-size:13px;color:var(--muted-2);}
+.dash-sub{margin-bottom:32px;font-size:15px;color:var(--muted);font-weight:300;}
+
+.table-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:24px;}
+.trow{display:grid;grid-template-columns:1.4fr 0.7fr 0.7fr 0.9fr 0.7fr 0.9fr 1fr;align-items:center;}
+.thead{
+  padding:14px 24px;border-bottom:1px solid var(--border);
+  font-size:12px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted-2);font-weight:500;
+}
+.tbody-row{padding:16px 24px;border-bottom:1px solid var(--canvas);font-size:15px;}
+.tbody-row:last-child{border-bottom:none;}
+.tbody-row .name{font-weight:500;}
+.tbody-row .dim{color:var(--muted);}
+.tbody-row .strong{font-weight:600;}
+.badge{display:inline-block;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:0.03em;}
+.badge-scale{background:var(--green-tint);color:var(--green-hover);}
+.badge-continue{background:var(--canvas);color:var(--muted);}
+.badge-kill{background:var(--danger-bg);color:var(--danger-fg);}
+
+.dash-grid{display:grid;grid-template-columns:1.3fr 0.7fr;gap:24px;}
+.ladder-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:28px;}
+.ladder-card .eyebrow-quiet{margin-bottom:4px;letter-spacing:0.06em;}
+.ladder-sub{margin-bottom:24px;font-size:14px;color:var(--muted);font-weight:300;}
+.ladder-rows{display:flex;flex-direction:column;gap:14px;}
+.ladder-row{display:grid;grid-template-columns:130px 1fr 70px;align-items:center;gap:14px;font-size:14px;}
+.ladder-row .k{color:var(--muted);}
+.ladder-track{height:22px;background:var(--canvas);border-radius:5px;}
+.ladder-fill{height:22px;border-radius:5px;}
+.ladder-fill.is-soft{background:var(--green-bar-soft);}
+.ladder-fill.is-solid{background:var(--green);}
+.ladder-row .v{font-weight:600;text-align:right;}
+
+.thresh-card{background:var(--ink);color:var(--on-dark);border-radius:14px;padding:28px;}
+.thresh-card .eyebrow-quiet{margin-bottom:20px;letter-spacing:0.06em;}
+.thresh-list{display:flex;flex-direction:column;gap:14px;font-size:14px;line-height:1.45;font-weight:300;}
+.thresh-n{color:var(--green-light);font-weight:500;}
+
+/* ============================================================
+   CONTENT PAGES (about / privacy / terms)
+   ============================================================ */
+.doc-head{background:linear-gradient(180deg,var(--page) 0%,var(--white) 100%);border-bottom:1px solid var(--canvas);}
+.doc-head-inner{padding-top:72px;padding-bottom:52px;}
+.doc-head .eyebrow{display:block;margin-bottom:16px;}
+.doc-head h1{font-size:44px;line-height:1.1;font-weight:600;letter-spacing:-0.025em;text-wrap:pretty;}
+.doc-head .lede{margin-top:18px;max-width:620px;font-size:18px;}
+.doc-meta{margin-top:22px;font-size:13px;color:var(--muted-2);}
+
+.doc-body{background:var(--white);}
+.doc-body-inner{padding-top:56px;padding-bottom:88px;}
+
+.doc-note{
+  background:var(--green-tint);border:1px solid #c7e0d3;border-radius:12px;
+  padding:18px 22px;margin-bottom:40px;font-size:14px;line-height:1.6;color:#1a4d38;
+}
+.doc-note strong{font-weight:600;}
+
+.doc-toc{border:1px solid var(--border);background:var(--page);border-radius:12px;padding:22px 26px;margin-bottom:48px;}
+.doc-toc .eyebrow-quiet{margin-bottom:14px;}
+.doc-toc ol{margin:0;padding-left:20px;columns:2;column-gap:32px;font-size:14px;}
+.doc-toc li{margin-bottom:8px;break-inside:avoid;}
+.doc-toc li::marker{color:var(--faint);}
+.doc-toc a{color:var(--ink-soft);}
+.doc-toc a:hover{color:var(--green);}
+
+.doc h2{font-size:22px;font-weight:600;letter-spacing:-0.01em;margin-top:48px;margin-bottom:12px;scroll-margin-top:96px;}
+.doc h2:first-child{margin-top:0;}
+.doc h3{font-size:16px;font-weight:600;margin-top:26px;margin-bottom:8px;}
+.doc p{font-size:16px;line-height:1.7;color:var(--muted);font-weight:300;margin-bottom:14px;}
+.doc ul{margin:0 0 16px;padding-left:22px;}
+.doc li{font-size:16px;line-height:1.7;color:var(--muted);font-weight:300;margin-bottom:8px;}
+.doc ul li::marker{color:var(--green);}
+.doc strong{font-weight:500;color:var(--ink);}
+.doc a{text-decoration:underline;text-underline-offset:2px;}
+.fill{background:#fdf3d8;color:#7a5a10;border-radius:5px;padding:1px 7px;font-size:0.92em;font-weight:500;}
+
+/* About */
+.about-why{background:var(--white);}
+.about-why-inner{padding-top:64px;padding-bottom:64px;}
+.about-lead{font-size:19px;line-height:1.6;color:var(--ink-soft);font-weight:300;margin-bottom:18px;text-wrap:pretty;}
+.about-lead:last-child{margin-bottom:0;}
+.about-steps{background:var(--page);border-top:1px solid var(--canvas);border-bottom:1px solid var(--canvas);}
+.about-steps-inner{padding-top:72px;padding-bottom:80px;}
+.step4{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;}
+.nots{background:var(--white);}
+.nots-inner{padding-top:72px;padding-bottom:80px;}
+.not-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px;}
+.not-item{
+  display:flex;gap:12px;align-items:baseline;font-size:16px;line-height:1.5;
+  color:var(--muted);font-weight:300;padding:16px 0;border-bottom:1px solid var(--canvas);
+}
+.not-mark{color:var(--disabled);font-weight:500;flex:none;}
+
+
+/* ============================================================
+   PREVIEW SWITCHER — delete this block and its markup for production
+   ============================================================ */
+.preview-bar{
+  position:fixed;right:16px;bottom:16px;z-index:100;
+  display:flex;align-items:center;gap:4px;
+  background:rgba(19,26,23,0.94);backdrop-filter:blur(8px);
+  border-radius:999px;padding:6px;box-shadow:0 12px 32px -12px rgba(19,26,23,0.6);
+}
+.preview-bar button{
+  background:none;border:none;font-size:12px;cursor:pointer;padding:7px 12px;
+  border-radius:999px;color:var(--faint);white-space:nowrap;
+  transition:color .15s ease,background-color .15s ease;
+}
+.preview-bar button:hover{color:#fff;}
+.preview-bar button[aria-current="true"]{color:#fff;background:var(--divider-dark);}
+.preview-bar .close{color:var(--muted-2);padding:7px 10px;}
+
+/* ============================================================
+   RESPONSIVE — mobile (390px reference)
+   ============================================================ */
+@media (max-width:880px){
+  :root{--pad-x:22px;}
+
+  /* Nav */
+  .nav{
+    background:rgba(255,255,255,0.94);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  }
+  .nav-inner{height:auto;padding:14px var(--pad-x);}
+  .nav-left{gap:0;}
+  .nav-links{display:none;}
+  .nav-right{display:none;}
+  .nav-burger{
+    display:flex;flex-direction:column;gap:4.5px;padding:10px 2px;min-height:44px;
+    justify-content:center;background:none;border:none;cursor:pointer;
+  }
+  .nav-burger span{display:block;width:20px;height:2px;background:var(--ink);border-radius:1px;}
+  .nav-menu.is-open{
+    display:flex;flex-direction:column;gap:2px;
+    padding:8px var(--pad-x) 16px;border-top:1px solid var(--border);
+  }
+  .nav-menu a,.nav-menu button{
+    display:flex;align-items:center;min-height:44px;font-size:16px;
+    color:var(--ink-soft);background:none;border:none;text-align:left;cursor:pointer;padding:0;
+  }
+  .nav-menu .btn{min-height:48px;margin-top:8px;width:100%;}
+  .wordmark{font-size:17px;}
+  .fnav-brand .wordmark{font-size:15px;}
+  .fnav-brand .crumb-sep,.fnav-brand .crumb{font-size:14px;}
+  .fnav-cta{border-radius:8px;padding:8px 12px;font-size:12px;min-height:36px;}
+
+  /* Hero */
+  .hero-inner{
+    padding-top:40px;padding-bottom:36px;
+    grid-template-columns:1fr;gap:28px;
+  }
+  .h1{font-size:34px;line-height:1.1;letter-spacing:-0.02em;}
+  .hero-h1{margin-bottom:14px;}
+  .hero-copy{font-size:16px;line-height:1.55;margin-bottom:24px;max-width:none;}
+  .hero-actions{flex-direction:column;align-items:stretch;gap:12px;}
+  .hero-micro{margin-top:16px;font-size:13px;text-align:center;}
+  .btn-hero,.btn-hero-outline,.btn-lg,.btn-xl,.btn-xxl{
+    width:100%;border-radius:12px;padding:16px;font-size:16px;
+  }
+  .btn-hero-outline{padding:15px;}
+  .metric-card{padding:24px;border-radius:16px;}
+  .metric-row{padding-bottom:12px;}
+  .metric-value{font-size:20px;}
+
+  /* Trust */
+  .trust-inner{padding-top:18px;padding-bottom:18px;gap:10px 22px;font-size:13px;}
+
+  /* Problems */
+  .problems-inner{padding-top:36px;padding-bottom:40px;}
+  .section-head{margin-bottom:24px;}
+  .h2,.h2-sm,.h2-lg{font-size:24px;letter-spacing:-0.02em;}
+  .lede{font-size:15px;}
+  .problem-grid{grid-template-columns:1fr;gap:12px;}
+  .problem-card{padding:20px;gap:8px;}
+  .problem-hook{font-size:16px;}
+
+  /* How */
+  .how-inner{padding-top:36px;padding-bottom:40px;}
+  .how-grid{grid-template-columns:1fr;gap:24px;}
+  .how-num{font-size:28px;}
+  .how-step h3{font-size:17px;}
+
+  /* Results */
+  .results-inner{padding-top:40px;padding-bottom:40px;grid-template-columns:1fr;gap:28px;}
+  .stat-grid{gap:12px;}
+  .stat-value{font-size:28px;}
+  .stat-value .unit{font-size:16px;}
+  .stat-label{font-size:12px;}
+
+  /* Final CTA */
+  .cta-light-inner{padding-top:40px;padding-bottom:40px;}
+
+  /* Footer */
+  .footer-inner{
+    padding-top:32px;padding-bottom:16px;
+    grid-template-columns:1fr 1fr;gap:24px 20px;
+  }
+  .footer-brand{grid-column:1 / -1;}
+  .footer-legal{padding:16px var(--pad-x);font-size:12px;}
+
+  /* Funnel page */
+  .fhero-inner{padding-top:40px;padding-bottom:36px;}
+  .h1-center{font-size:30px;line-height:1.14;letter-spacing:-0.02em;}
+  .fhero-copy{font-size:15px;line-height:1.55;margin-bottom:22px;}
+  .fhero-micro{font-size:12px;}
+  .agitate-inner{padding-top:32px;padding-bottom:32px;grid-template-columns:1fr;gap:20px;}
+  .agitate-item h3{font-size:17px;}
+  .mech-inner{padding-top:32px;padding-bottom:36px;grid-template-columns:1fr;gap:28px;}
+  .mech-steps{font-size:15px;gap:14px;}
+  .change-card{padding:24px;box-shadow:var(--shadow-card-sm);}
+  .report-inner{padding-top:36px;padding-bottom:36px;grid-template-columns:1fr;gap:28px;}
+  .report-card{padding:22px;border-radius:14px;}
+  .report-row{padding-bottom:10px;}
+  .faq-inner{padding-top:36px;padding-bottom:36px;}
+  .faq-inner .h2-sm{margin-bottom:20px;text-align:left;}
+  .faq-item{padding:16px 18px;}
+  .faq-item h3{font-size:15px;}
+  .faq-item p{font-size:14px;}
+  .cta-dark-inner{padding-top:44px;padding-bottom:52px;}
+  .cta-dark-copy{font-size:15px;margin-bottom:24px;}
+
+  /* Signup */
+  .signup{padding:32px var(--pad-x) 56px;}
+  .signup-card{padding:26px 22px;}
+  .signup-card h1{font-size:23px;}
+  .submit{padding:16px;border-radius:12px;min-height:52px;}
+  .confirm-card{padding:32px 22px;}
+
+  /* Content pages */
+  .doc-head-inner{padding-top:36px;padding-bottom:32px;}
+  .doc-head h1{font-size:28px;letter-spacing:-0.02em;}
+  .doc-head .lede{font-size:16px;margin-top:14px;}
+  .doc-meta{margin-top:16px;}
+  .doc-body-inner{padding-top:36px;padding-bottom:56px;}
+  .doc-note{padding:16px 18px;margin-bottom:28px;font-size:13px;}
+  .doc-toc{padding:18px 20px;margin-bottom:32px;}
+  .doc-toc ol{columns:1;}
+  .doc h2{font-size:19px;margin-top:36px;scroll-margin-top:76px;}
+  .doc p,.doc li{font-size:15px;line-height:1.65;}
+  .about-why-inner,.about-steps-inner,.nots-inner{padding-top:36px;padding-bottom:40px;}
+  .about-lead{font-size:16px;}
+  .step4{grid-template-columns:1fr;gap:24px;}
+  .not-grid{grid-template-columns:1fr;gap:0;}
+  .not-item{font-size:15px;padding:14px 0;}
+
+  /* Dashboard */
+  .dash{padding:28px var(--pad-x) 56px;}
+  .dash-head{flex-direction:column;align-items:flex-start;gap:4px;}
+  .dash-sub{margin-bottom:20px;}
+  .table-card{overflow-x:auto;}
+  .trow{grid-template-columns:1.4fr 0.7fr 0.7fr 0.9fr 0.7fr 0.9fr 1fr;min-width:720px;}
+  .dash-grid{grid-template-columns:1fr;}
+  .ladder-row{grid-template-columns:104px 1fr 56px;gap:10px;font-size:13px;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;scroll-behavior:auto !important;
+  }
+  .problem-card:hover{transform:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+
+<!-- PREVIEW ONLY — screen switcher, not part of the product. Delete this element and the .preview-bar CSS block for production. -->
+<div class="preview-bar" id="previewBar" role="group" aria-label="Preview: switch screen"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ==========================================================
+     CONTENT / DATA
+     Funnel pages are data-driven: add an entry to FUNNELS and a
+     matching card to PAINS to ship a new pain-specific page.
+     ========================================================== */
+
+  var VERTICAL = 'Generic local business'; // 'Dentists' | 'Salons / barbers'
+
+  var PAINS = [
+    { slug: 'Reviews',             target: 'reviews',      hook: 'Customers keep saying they’ll leave you a review. Then they forget.' },
+    { slug: 'Missed calls',        target: 'missed-calls', hook: 'Someone called while you were busy. They called your competitor next.' },
+    { slug: 'No-shows',            target: 'no-shows',     hook: 'Every empty appointment from a no-show is inventory you can never sell again.' },
+    { slug: 'Old leads',           target: 'old-leads',    hook: 'Last year’s quotes are sitting in a spreadsheet. Some of them still want the work.' },
+    { slug: 'Website',             target: 'website',      hook: 'Your website might be costing you customers. Find out in 60 seconds.' },
+    { slug: 'Unanswered messages', target: 'messages',     hook: 'Someone messaged you three days ago. They’re still waiting. Or they were.' }
+  ];
+
+  /* Copy shared by every funnel page. Individual funnels override any of it. */
+  var COMMON = {
+    navCta: 'Try free for 30 days',
+    heroCta: 'Try it free for 30 days',
+    heroMicro: 'No credit card · 15-minute setup · Cancel with one email',
+    ctaMicro: 'No credit card. $49/month after — only if the report earns it.',
+    email: 'hello@groundworklabs.example',
+    changeLabel: 'What changes',
+    changeNote: 'Your numbers are measured, not promised. That’s the point of the 30 days.',
+    mechanismEyebrow: 'The mechanism',
+    reportEyebrow: 'Day 30',
+    reportHeading: 'One report. One decision.',
+    reportTitle: 'Day 30 report'
+  };
+
+  var FUNNELS = {
+    reviews: {
+      slug: 'reviews',
+      title: 'Reviews',
+      navCta: 'Try free for 30 days',
+      headlines: {
+        'Generic local business': 'Customers keep saying they\u2019ll leave you a review. Then they forget.',
+        'Dentists': 'You saw 140 patients last month. How many left a Google review?',
+        'Salons / barbers': 'You had 180 appointments last month. How many became Google reviews?'
+      },
+      offerCopy: 'You already ask customers for reviews. Most forget. We\u2019ll automatically follow up with every customer for 30 days and show you exactly how many additional Google reviews it generates.',
+      heroCta: 'Try it free for 30 days',
+      heroMicro: 'No credit card \u00b7 15-minute setup \u00b7 Cancel with one email',
+      agitation: [
+        { h: '\u201cSure, I\u2019ll leave one tonight.\u201d', p: 'They mean it. Then dinner happens, and the review never does. It\u2019s not bad service \u2014 it\u2019s normal forgetting.' },
+        { h: 'Your competitor has 240 reviews.', p: 'Not because they\u2019re better. Because they follow up on every job and you follow up when someone remembers to.' },
+        { h: 'Nobody on your team has time.', p: 'Chasing reviews is the first thing dropped on a busy day. Which is every day. So it needs to not be a person\u2019s job.' }
+      ],
+      mechanism: {
+        eyebrow: 'The mechanism',
+        heading: 'Every completed job triggers a follow-up. Every time.',
+        steps: [
+          'We connect to where your completed jobs live \u2014 your booking system, POS, or invoices.',
+          'Each customer gets a friendly text a few hours after the job, with a one-tap link to your Google page.',
+          'No response? A gentle reminder days later. Then we stop. Nobody gets nagged.',
+          'Every review is logged, so on day 30 you see the exact count the mechanism produced.'
+        ]
+      },
+      beforeAfter: {
+        label: 'What changes',
+        nowLabel: 'Now',
+        nowValue: '2\u20133 reviews / month',
+        nowPct: 16,
+        transition: 'install the follow-up mechanism',
+        afterLabel: 'After 30 days',
+        afterValue: '10\u201320 reviews / month',
+        afterPct: 88,
+        note: 'Your numbers are measured, not promised. That\u2019s the point of the 30 days.'
+      },
+      report: {
+        eyebrow: 'Day 30',
+        heading: 'One report. One decision.',
+        paras: [
+          'On day 30 you get a report with the exact number of reviews the mechanism generated. If it\u2019s worth more than $49 a month to you, keep it running. If not, walk away and keep the reviews.',
+          'There\u2019s no pitch meeting. The report is the pitch.'
+        ],
+        card: {
+          title: 'Day 30 report',
+          customer: 'Northside Auto Care',
+          rows: [
+            { k: 'Customers followed up', v: '137' },
+            { k: 'Review links tapped', v: '41' },
+            { k: 'New Google reviews', v: '+14', good: true },
+            { k: 'Average rating of new reviews', v: '4.8', good: true }
+          ]
+        }
+      },
+      faqs: [
+        { q: 'Is this another marketing agency?', a: 'No. There\u2019s no retainer, no strategy calls, no \u201conline presence.\u201d One mechanism runs, one number gets measured. You judge the number.' },
+        { q: 'What do you need access to?', a: 'Only where your completed jobs live \u2014 usually your booking system, POS, or invoicing. Read access, connected in about 15 minutes. No passwords over email.' },
+        { q: 'Will my customers feel spammed?', a: 'One friendly text, one reminder, then silence. You approve the wording before anything sends.' },
+        { q: 'What does it cost after the trial?', a: '$49/month, cancel any time with one email. Most owners compare that to what one new customer from Google is worth and decide in about a minute.' },
+        { q: 'What if it doesn\u2019t work for my business?', a: 'Then the day-30 report will say so, you\u2019ll pay nothing, and you keep whatever reviews came in. That outcome costs you 15 minutes of setup.' }
+      ],
+      finalCta: {
+        heading: 'Your next 30 days of customers are coming either way.',
+        copy: 'The only question is whether they leave reviews. Turn the mechanism on and find out what your number is.',
+        cta: 'Try it free for 30 days',
+        micro: 'No credit card. $49/month after \u2014 only if the report earns it.'
+      }
+    },
+
+    'missed-calls': {
+      title: 'Missed calls',
+      headline: 'Someone called while you were busy. They called your competitor next.',
+      offerCopy: 'Every call you miss gets a text back within seconds — before they scroll down to the next result. For 30 days we’ll catch every missed call and show you exactly how many turned into booked work.',
+      agitation: [
+        { h: 'The phone rang during a job.', p: 'You had both hands full. By the time you listened to the voicemail — if they even left one — they’d already booked someone else.' },
+        { h: 'Most people don’t leave voicemails.', p: 'They hang up and dial the next number in the search results. You never find out they called at all.' },
+        { h: 'After-hours calls just vanish.', p: 'Evenings and weekends are when people finally get around to calling. Nobody’s there, and by Monday they’ve moved on.' }
+      ],
+      mechanism: {
+        heading: 'Every missed call gets a text back in under a minute.',
+        steps: [
+          'We sit alongside the number you already advertise — no porting, no new phone, nothing to answer differently.',
+          'When a call goes unanswered, the caller gets a text within seconds: who you are, and one question that’s easy to answer.',
+          'Their reply lands in a single thread on one phone. You’re answering a text, not learning software.',
+          'Every missed call, reply, and booking is logged, so on day 30 you see what you’d otherwise have lost.'
+        ]
+      },
+      beforeAfter: {
+        nowLabel: 'Now',
+        nowValue: 'Missed calls go nowhere',
+        nowPct: 12,
+        transition: 'install the call-back mechanism',
+        afterLabel: 'After 30 days',
+        afterValue: 'About 6 in 10 reply',
+        afterPct: 62
+      },
+      report: {
+        paras: [
+          'On day 30 you get a report with the exact number of missed calls that turned into replies, and how many of those became booked work. If that’s worth more than $49 a month, keep it running.',
+          'There’s no pitch meeting. The report is the pitch.'
+        ],
+        card: {
+          customer: 'Halloran Plumbing & Heating',
+          rows: [
+            { k: 'Calls missed', v: '68' },
+            { k: 'Texted back automatically', v: '68' },
+            { k: 'Callers who replied', v: '39', good: true },
+            { k: 'Jobs booked from replies', v: '12', good: true }
+          ]
+        }
+      },
+      faqs: [
+        { q: 'Do I need a new phone number?', a: 'No. We sit alongside the number you already advertise. Nothing changes on your trucks, your cards, or your Google listing.' },
+        { q: 'What happens if I answer the call?', a: 'Nothing sends. The text only fires when a call goes unanswered, and only once per caller per day.' },
+        { q: 'Who replies to the texts?', a: 'Whoever already handles your messages. Everything arrives in one thread on one phone — there’s no new inbox to remember to check.' },
+        { q: 'What does it cost after the trial?', a: '$49/month, cancel any time with one email. Most owners work out that one recovered job covers the year.' },
+        { q: 'What if I barely miss any calls?', a: 'Then the day-30 report will say so, you’ll pay nothing, and you’ll know. Some shops find out they miss four calls a week. Some find out it’s forty.' }
+      ],
+      finalCta: {
+        heading: 'The calls you miss next month are already coming.',
+        copy: 'The only question is whether those callers hear from you before they dial the next number on the list.'
+      }
+    },
+
+    'no-shows': {
+      title: 'No-shows',
+      headline: 'Every empty appointment from a no-show is inventory you can never sell again.',
+      offerCopy: 'An empty chair at 2pm can’t be sold back later. We’ll confirm every appointment automatically for 30 days and show you exactly how far your no-show rate moved.',
+      agitation: [
+        { h: 'The 9am that never showed.', p: 'That hour is gone. You can’t sell it tomorrow, and you already paid someone to be there for it.' },
+        { h: 'They didn’t mean to skip.', p: 'Most no-shows are forgetting, not flaking. A reminder people actually read fixes most of them.' },
+        { h: 'Calling to confirm eats a morning.', p: 'Somebody has to work down the list. That somebody has other work, so it gets skipped on exactly the days it matters most.' }
+      ],
+      mechanism: {
+        heading: 'Every appointment gets confirmed before it becomes an empty chair.',
+        steps: [
+          'We connect to your booking system or calendar and read tomorrow’s schedule.',
+          'Each customer gets a text they can confirm with one tap — no app, no login, no phone call.',
+          'Anyone who hasn’t confirmed gets one nudge, plus a one-tap way to move the appointment instead of vanishing.',
+          'Confirmations, reschedules, and no-shows are all logged, so day 30 shows you a rate, not a feeling.'
+        ]
+      },
+      beforeAfter: {
+        nowLabel: 'No-show rate now',
+        nowValue: '22% of appointments',
+        nowPct: 88,
+        transition: 'install the confirmation mechanism',
+        afterLabel: 'After 30 days',
+        afterValue: '9% of appointments',
+        afterPct: 36
+      },
+      report: {
+        paras: [
+          'On day 30 you get a report with your real no-show rate before and after, plus how many customers moved an appointment instead of skipping it. If that’s worth more than $49 a month, keep it running.',
+          'There’s no pitch meeting. The report is the pitch.'
+        ],
+        card: {
+          customer: 'Bellweather Dental',
+          rows: [
+            { k: 'Appointments in the month', v: '238' },
+            { k: 'Confirmed by text', v: '214' },
+            { k: 'Rescheduled instead of skipped', v: '23', good: true },
+            { k: 'No-show rate', v: '22% → 9%', good: true }
+          ]
+        }
+      },
+      faqs: [
+        { q: 'What if my customers don’t text?', a: 'They get the reminder either way — the text just makes confirming one tap instead of a phone call. Anyone who doesn’t respond still shows up on your list to call.' },
+        { q: 'Does this replace my booking system?', a: 'No. We read from it and write confirmations back into it. You keep working exactly the way you already do.' },
+        { q: 'Won’t reminders annoy people?', a: 'One confirmation, one nudge, then silence. You approve the wording before anything sends.' },
+        { q: 'What does it cost after the trial?', a: '$49/month, cancel any time with one email. One kept appointment a month usually covers it several times over.' },
+        { q: 'What if my no-show rate is already low?', a: 'Then the report says so and you pay nothing. Knowing the real number is worth 15 minutes of setup either way.' }
+      ],
+      finalCta: {
+        heading: 'Next month’s schedule is already filling up.',
+        copy: 'The only question is how many of those slots are still full on the day. Turn the confirmations on and find out what your number is.'
+      }
+    },
+
+    'old-leads': {
+      title: 'Old leads',
+      headline: 'Last year’s quotes are sitting in a spreadsheet. Some of them still want the work.',
+      offerCopy: 'You already paid to get every one of those leads. We’ll work back through them for 30 days with a message that doesn’t read like a chase, and show you exactly how many came back.',
+      agitation: [
+        { h: 'They didn’t say no. They said not yet.', p: 'Then the season changed, the budget freed up, and nobody followed up. The quote is still sitting there.' },
+        { h: 'Following up feels like begging.', p: 'So it doesn’t happen. But a straight question six months later isn’t a chase — it’s a reasonable thing to ask.' },
+        { h: 'You already paid for these leads.', p: 'Ad spend, referral fees, the hour you spent writing the quote. That money is spent whether you follow up or not.' }
+      ],
+      mechanism: {
+        heading: 'Every quote you never heard back on gets one more honest ask.',
+        steps: [
+          'You hand us the list — a spreadsheet export, your CRM, or the quotes folder in your inbox.',
+          'We clean it: remove duplicates, drop anyone who already bought, drop anyone who asked not to be contacted.',
+          'Each remaining lead gets one message written in your voice, spaced out so it never looks like a blast.',
+          'Replies come straight to you. Everything else is logged, so day 30 shows what the list was actually worth.'
+        ]
+      },
+      beforeAfter: {
+        nowLabel: 'Now',
+        nowValue: '0 contacted / month',
+        nowPct: 6,
+        transition: 'work the list once, properly',
+        afterLabel: 'After 30 days',
+        afterValue: 'About 1 in 12 reply',
+        afterPct: 74
+      },
+      report: {
+        paras: [
+          'On day 30 you get a report with how many old leads were contactable, how many replied, and how many quotes reopened. If that’s worth more than $49 a month, keep it running.',
+          'There’s no pitch meeting. The report is the pitch.'
+        ],
+        card: {
+          customer: 'Cedar Ridge Landscaping',
+          rows: [
+            { k: 'Old leads on the list', v: '412' },
+            { k: 'Contactable after cleaning', v: '318' },
+            { k: 'Replied', v: '27', good: true },
+            { k: 'Quotes reopened', v: '9', good: true }
+          ]
+        }
+      },
+      faqs: [
+        { q: 'Isn’t this spam?', a: 'One message, sent to people who personally asked you for a quote, with an obvious way to opt out. Anyone who already bought or already opted out is never contacted.' },
+        { q: 'What format does the list need to be in?', a: 'A CSV, a CRM export, or read access to wherever quotes live. If it’s a mess, that’s normal — cleaning it up is part of the setup.' },
+        { q: 'Who handles the replies?', a: 'You do. Replies go to your inbox or your phone, because what follows is a sales conversation and it shouldn’t be a script.' },
+        { q: 'What does it cost after the trial?', a: '$49/month, cancel any time with one email. Most owners compare that to a single reopened quote.' },
+        { q: 'What if the list is really old?', a: 'Then the report tells you what a cold list is worth — which is worth knowing before you spend more money on new leads.' }
+      ],
+      finalCta: {
+        heading: 'That list isn’t getting any warmer.',
+        copy: 'The only question is what’s still in it. Work it once, properly, and find out what your number is.'
+      }
+    },
+
+    website: {
+      title: 'Website',
+      headline: 'Your website might be costing you customers. Find out in 60 seconds.',
+      offerCopy: 'Most local sites lose people in three places: the phone number, the loading time, and the contact form. We’ll fix those three, then count calls and enquiries for 30 days so you can see what the old site was costing you.',
+      agitation: [
+        { h: 'They found you on a phone.', p: 'Most of your visitors are on a five-inch screen in a parking lot. If the number isn’t tappable in the first second, they’re gone.' },
+        { h: 'Four seconds is too long.', p: 'Half of mobile visitors leave before a slow page finishes loading. They never get as far as seeing how good you are at the job.' },
+        { h: 'The form goes to an inbox nobody opens.', p: 'Enquiries arrive. Nobody replies. From the customer’s side, that looks exactly like being ignored.' }
+      ],
+      mechanism: {
+        heading: 'Three fixes, then thirty days of counting.',
+        steps: [
+          'We check what’s actually happening: load time, tap targets, where the phone number sits, and where the form ends up.',
+          'We fix the three that cost the most — usually a tappable number, a faster page, and enquiries routed to a phone.',
+          'Nothing else changes. Same site, same brand, same words. This isn’t a rebuild.',
+          'Calls and form enquiries are counted from day one, so day 30 shows a difference rather than an opinion.'
+        ]
+      },
+      beforeAfter: {
+        nowLabel: 'Now',
+        nowValue: '1.2% of visitors call',
+        nowPct: 14,
+        transition: 'fix the three that cost the most',
+        afterLabel: 'After 30 days',
+        afterValue: '3.4% of visitors call',
+        afterPct: 80
+      },
+      report: {
+        paras: [
+          'On day 30 you get a report with calls and enquiries before and after, next to what the page actually does now. If that’s worth more than $49 a month, keep it running.',
+          'There’s no pitch meeting. The report is the pitch.'
+        ],
+        card: {
+          customer: 'Marchetti Tile & Stone',
+          rows: [
+            { k: 'Mobile load time', v: '6.1s → 1.4s', good: true },
+            { k: 'Calls from the site', v: '11 → 34', good: true },
+            { k: 'Form enquiries', v: '4 → 13', good: true },
+            { k: 'Enquiries answered same day', v: '3 → 13', good: true }
+          ]
+        }
+      },
+      faqs: [
+        { q: 'Do I need a whole new website?', a: 'No. This is three targeted fixes to the site you already have. A rebuild is a much bigger decision, and it shouldn’t be made on a hunch.' },
+        { q: 'What access do you need?', a: 'Whoever hosts your site, plus your analytics if you have any. If you don’t know who hosts it, we’ll work it out — that’s a common starting point.' },
+        { q: 'Will it look different?', a: 'Barely. The phone number gets bigger and easier to tap. Everything else stays where your customers expect to find it.' },
+        { q: 'What does it cost after the trial?', a: '$49/month, cancel any time with one email. That keeps the fixes maintained and the counting running.' },
+        { q: 'What if the site turns out to be fine?', a: 'Then the day-30 report says so and you pay nothing. Ruling it out costs you 15 minutes.' }
+      ],
+      finalCta: {
+        heading: 'People are on your site right now.',
+        copy: 'Some of them are about to leave without calling you. Turn the counting on and find out how many.'
+      }
+    },
+
+    messages: {
+      title: 'Unanswered messages',
+      headline: 'Someone messaged you three days ago. They’re still waiting. Or they were.',
+      offerCopy: 'Google, Facebook, Instagram, your website form — messages land in four places and get watched in none of them. We’ll pull them into one thread and answer the first minute automatically, for 30 days.',
+      agitation: [
+        { h: 'Four inboxes, no owner.', p: 'Google Business, Facebook, Instagram, the website form. Everyone assumes somebody else is keeping an eye on them.' },
+        { h: 'The first reply usually wins.', p: 'People message three businesses at once. Whoever answers first tends to get the job, whether or not they’re the best at it.' },
+        { h: 'By the time you see it, it’s cold.', p: 'A reply three days later reads as an apology. A reply in two minutes reads as a business that has its act together.' }
+      ],
+      mechanism: {
+        heading: 'Every message, one thread, first reply in under a minute.',
+        steps: [
+          'We connect the places people already message you — Google, Facebook, Instagram, and your website form.',
+          'Everything lands in one thread on one phone, so there’s no inbox left for someone to forget.',
+          'The first reply goes out automatically within a minute: an acknowledgement, plus the one question you’d always have to ask anyway.',
+          'Response times and outcomes are logged, so day 30 shows how long people actually waited.'
+        ]
+      },
+      beforeAfter: {
+        nowLabel: 'Now',
+        nowValue: 'Answered within an hour: 1 in 5',
+        nowPct: 20,
+        transition: 'install the first-reply mechanism',
+        afterLabel: 'After 30 days',
+        afterValue: 'Answered within an hour: 19 in 20',
+        afterPct: 95
+      },
+      report: {
+        paras: [
+          'On day 30 you get a report with your real median reply time, before and after, and how many of those conversations turned into work. If that’s worth more than $49 a month, keep it running.',
+          'There’s no pitch meeting. The report is the pitch.'
+        ],
+        card: {
+          customer: 'Lakeside Salon & Spa',
+          rows: [
+            { k: 'Messages received', v: '96' },
+            { k: 'Median first reply', v: '8h 40m → 51s', good: true },
+            { k: 'Answered within an hour', v: '19% → 96%', good: true },
+            { k: 'Appointments booked from messages', v: '31', good: true }
+          ]
+        }
+      },
+      faqs: [
+        { q: 'Is a robot talking to my customers?', a: 'Only the first message, and only to say you’ve got it and ask the one thing you’d ask anyway. You take it from there — usually within minutes, now that you can actually see it.' },
+        { q: 'What do you need access to?', a: 'Page-level access to whichever channels you want connected. No passwords over email, and you can revoke it at any time.' },
+        { q: 'Do I need new software?', a: 'No. Everything arrives as texts in one thread, on the phone you already carry.' },
+        { q: 'What does it cost after the trial?', a: '$49/month, cancel any time with one email.' },
+        { q: 'What if we already reply quickly?', a: 'Then the report will show it and you’ll pay nothing. Most owners are surprised by what their real median turns out to be.' }
+      ],
+      finalCta: {
+        heading: 'Someone is typing you a message this week.',
+        copy: 'The only question is how long they wait for an answer. Turn the first reply on and find out what your number is.'
+      }
+    }
+  };
+
+  /* Order used for the footer and any funnel index. */
+  var FUNNEL_ORDER = ['reviews', 'missed-calls', 'no-shows', 'old-leads', 'website', 'messages'];
+
+  /* Fill each funnel out from COMMON so a new page only needs its own copy. */
+  (function normalizeFunnels() {
+    Object.keys(FUNNELS).forEach(function (key) {
+      var f = FUNNELS[key];
+      f.slug = f.slug || key;
+      f.title = f.title || f.slug;
+      f.navCta = f.navCta || COMMON.navCta;
+      f.heroCta = f.heroCta || COMMON.heroCta;
+      f.heroMicro = f.heroMicro || COMMON.heroMicro;
+      f.headlines = f.headlines || { 'Generic local business': f.headline };
+
+      f.mechanism.eyebrow = f.mechanism.eyebrow || COMMON.mechanismEyebrow;
+
+      f.beforeAfter.label = f.beforeAfter.label || COMMON.changeLabel;
+      f.beforeAfter.note = f.beforeAfter.note || COMMON.changeNote;
+
+      f.report.eyebrow = f.report.eyebrow || COMMON.reportEyebrow;
+      f.report.heading = f.report.heading || COMMON.reportHeading;
+      f.report.card.title = f.report.card.title || COMMON.reportTitle;
+
+      f.finalCta.cta = f.finalCta.cta || COMMON.heroCta;
+      f.finalCta.micro = f.finalCta.micro || COMMON.ctaMicro;
+
+    });
+  })();
+
+  var HOW_STEPS = [
+    { n: '01', h: 'Connect', p: 'We plug into where your work already lives \u2014 your phone line, booking system, or inbox. About 15 minutes.' },
+    { n: '02', h: 'The fix runs', p: 'Every customer, call, or appointment gets the follow-up your team is too busy to do. Automatically, for 30 days.' },
+    { n: '03', h: 'See the number', p: 'Day 30: exactly how many reviews, recovered calls, or kept appointments the mechanism generated. Then you decide.' }
+  ];
+
+  var INDUSTRIES = ['Auto shop', 'Salon / barber', 'Dental practice', 'HVAC / trades', 'Restaurant', 'Other local business'];
+  var VOLUMES = ['Under 50', '50\u2013150', '150\u2013400', '400+'];
+
+  /* Dashboard data — in production this comes from the backend. */
+  var DASH = {
+    cycle: 'Internal \u00b7 cycle 3 \u00b7 Aug 2026',
+    funnels: [
+      { name: '/missed-calls', spend: '$250', leads: 44, cpl: '$6',  trials: 21, customers: 11, decision: 'Scale',    kind: 'scale' },
+      { name: '/reviews',      spend: '$250', leads: 31, cpl: '$8',  trials: 14, customers: 6,  decision: 'Continue', kind: 'continue' },
+      { name: '/old-website',  spend: '$250', leads: 9,  cpl: '$28', trials: 2,  customers: 0,  decision: 'Kill',     kind: 'kill' }
+    ],
+    ladder: [
+      { label: 'Impressions',     n: 20000, value: '20,000' },
+      { label: 'Clicks',          n: 300,   value: '300' },
+      { label: 'Signups',         n: 45,    value: '45' },
+      { label: 'Trials active',   n: 20,    value: '20' },
+      { label: 'Measured result', n: 12,    value: '12' },
+      { label: 'Paying $49/mo',   n: 8,     value: '8' }
+    ],
+    thresholds: [
+      { n: '0 signups', t: '\u2014 build nothing. Change message or kill.' },
+      { n: '1',         t: '\u2014 fulfill manually. Learn everything.' },
+      { n: '2\u20135',   t: '\u2014 fulfill manually, document the process.' },
+      { n: '5\u201320',  t: '\u2014 automate the repetitive pieces.' },
+      { n: '20\u201350', t: '\u2014 onboarding, integrations, billing.' },
+      { n: '50+',       t: '\u2014 now it\u2019s a scaling problem.' }
+    ]
+  };
+
+  /* ==========================================================
+     HELPERS
+     ========================================================== */
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  var LOGO = function (size) {
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 26 26" aria-hidden="true">' +
+      '<path d="M3.8 16.2 a9.2 9.2 0 0 1 18.4 0 z" fill="#1f8a5b"></path>' +
+      '<rect x="3.8" y="19" width="18.4" height="3.6" rx="1.8" fill="#131a17"></rect></svg>';
+  };
+
+  var WORDMARK = '<span class="wordmark">Groundwork&nbsp;<span class="labs">Labs</span></span>';
+
+  function ladderPct(n) {
+    return Math.max(3, Math.round(100 * Math.pow(n / 20000, 0.28)));
+  }
+
+  /* ==========================================================
+     STATE
+     ========================================================== */
+  var state = {
+    screen: 'home',      // home | funnel | signup | dashboard
+    funnel: 'reviews',
+    menuOpen: false,
+    form: { businessName: '', industry: '', monthlyVolume: '', email: '' },
+    submitted: false
+  };
+
+  /* Static screens. Every funnel gets '#/<slug>' automatically. */
+  var STATIC_ROUTES = {
+    '#/': 'home',
+    '#/signup': 'signup',
+    '#/dashboard': 'dashboard',
+    '#/about': 'about',
+    '#/privacy': 'privacy',
+    '#/terms': 'terms'
+  };
+
+  function hashFor(s) {
+    if (s.screen === 'funnel') return '#/' + s.funnel;
+    if (s.screen === 'home') return '#/';
+    return '#/' + s.screen;
+  }
+
+  function go(screen, funnel) {
+    if (screen !== 'signup') state.submitted = false;
+    state.screen = screen;
+    if (funnel) state.funnel = funnel;
+    state.menuOpen = false;
+    var h = hashFor(state);
+    if (window.location.hash !== h) {
+      window.location.hash = h;   // triggers hashchange -> render
+    } else {
+      render();
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function readHash() {
+    var h = window.location.hash || '#/';
+    // Ignore in-page anchors like '#p-overview' — those are scroll targets.
+    if (h.charAt(1) !== '/') return;
+    if (STATIC_ROUTES[h]) {
+      state.screen = STATIC_ROUTES[h];
+    } else {
+      var slug = h.slice(2);
+      if (Object.prototype.hasOwnProperty.call(FUNNELS, slug)) {
+        state.screen = 'funnel';
+        state.funnel = slug;
+      } else {
+        state.screen = 'home';
+      }
+    }
+    state.menuOpen = false;
+  }
+
+  /* ==========================================================
+     VIEWS
+     ========================================================== */
+
+  /* ==========================================================
+     SHARED CHROME
+     ========================================================== */
+
+  function siteNav() {
+    var links = '' +
+      '<a href="#/" data-scroll="problems">Problems we fix</a>' +
+      '<a href="#/" data-scroll="how">How it works</a>' +
+      '<a href="#/" data-scroll="results">Results</a>';
+
+    return '' +
+      '<header class="nav">' +
+        '<div class="nav-inner">' +
+          '<div class="nav-left">' +
+            '<button class="brand-link" type="button" data-go="home" aria-label="Groundwork Labs \u2014 home">' +
+              LOGO(26) + WORDMARK +
+            '</button>' +
+            '<nav class="nav-links" aria-label="Primary">' + links + '</nav>' +
+          '</div>' +
+          '<div class="nav-right">' +
+            '<button class="btn-text" type="button" data-go="signup">Sign in</button>' +
+            '<button class="btn btn-primary btn-nav" type="button" data-go="funnel" data-funnel="reviews">Start free</button>' +
+          '</div>' +
+          '<button class="nav-burger" type="button" data-menu aria-expanded="' + (state.menuOpen ? 'true' : 'false') + '" aria-controls="navMenu">' +
+            '<span></span><span></span><span></span><span class="sr-only">Menu</span>' +
+          '</button>' +
+        '</div>' +
+        '<nav id="navMenu" class="nav-menu' + (state.menuOpen ? ' is-open' : '') + '" aria-label="Primary mobile">' +
+          links +
+          '<a href="#/about" data-go="about">About</a>' +
+          '<button type="button" data-go="signup">Sign in</button>' +
+          '<button class="btn btn-primary btn-nav" type="button" data-go="funnel" data-funnel="reviews">Start free</button>' +
+        '</nav>' +
+      '</header>';
+  }
+
+  function siteFooter() {
+    var fixes = FUNNEL_ORDER.map(function (k) {
+      var f = FUNNELS[k];
+      return '<a href="#/' + esc(k) + '" data-go="funnel" data-funnel="' + esc(k) + '">' + esc(f.title) + '</a>';
+    }).join('');
+
+    return '' +
+      '<footer class="footer">' +
+        '<div class="wrap footer-inner">' +
+          '<div class="footer-brand">' +
+            '<div class="brand">' + LOGO(22) + WORDMARK + '</div>' +
+            '<p class="footer-tag">Fixes for the money local businesses leak every week.</p>' +
+          '</div>' +
+          '<div class="footer-col">' +
+            '<span class="footer-col-head">Fixes</span>' + fixes +
+          '</div>' +
+          '<div class="footer-col">' +
+            '<span class="footer-col-head">Company</span>' +
+            '<a href="#/about" data-go="about">About</a>' +
+            '<a href="#/" data-scroll="how">How it works</a>' +
+            '<a href="#/" data-scroll="results">Results</a>' +
+            '<a href="mailto:' + COMMON.email + '">Contact</a>' +
+          '</div>' +
+          '<div class="footer-col">' +
+            '<span class="footer-col-head">Legal</span>' +
+            '<a href="#/privacy" data-go="privacy">Privacy</a>' +
+            '<a href="#/terms" data-go="terms">Terms</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="footer-legal">\u00a9 2026 Groundwork Labs</div>' +
+      '</footer>';
+  }
+
+  function viewHome() {
+    var pains = PAINS.map(function (p, i) {
+      return '' +
+        '<button class="problem-card" type="button" data-go="funnel" data-funnel="' + esc(p.target) + '">' +
+          '<span class="problem-slug">' + esc(p.slug) + '</span>' +
+          '<p class="problem-hook">' + esc(p.hook) + '</p>' +
+          '<span class="problem-cta">Fix this \u2192</span>' +
+        '</button>';
+    }).join('');
+
+    var how = HOW_STEPS.map(function (s) {
+      return '' +
+        '<div class="how-step">' +
+          '<span class="how-num">' + s.n + '</span>' +
+          '<h3>' + esc(s.h) + '</h3>' +
+          '<p class="body-sm">' + esc(s.p) + '</p>' +
+        '</div>';
+    }).join('');
+
+    return '' +
+    '<div class="screen">' +
+
+      siteNav() +
+
+      '<section class="hero">' +
+        '<div class="wrap hero-inner">' +
+          '<div>' +
+            '<p class="eyebrow hero-eyebrow">For local businesses</p>' +
+            '<h1 class="h1 hero-h1">Every business leaks money somewhere.</h1>' +
+            '<p class="hero-copy">Missed calls, forgotten reviews, no-shows, dead leads. We find your leak, install the fix, and show you exactly what changed after 30 days.</p>' +
+            '<div class="hero-actions">' +
+              '<a class="btn btn-primary btn-hero" href="#/" data-scroll="problems">Find your leak</a>' +
+              '<a class="btn btn-outline btn-hero-outline" href="#/" data-scroll="how">How it works</a>' +
+            '</div>' +
+            '<p class="hero-micro">Free for 30 days \u00b7 No credit card \u00b7 Measured, not promised</p>' +
+          '</div>' +
+          '<div class="metric-card">' +
+            '<p class="eyebrow-quiet">A 30-day report, real customer</p>' +
+            '<div class="metric-rows">' +
+              '<div class="metric-row"><span class="metric-label">Google reviews / month</span><span class="metric-value">3 \u2192 17</span></div>' +
+              '<div class="metric-row"><span class="metric-label">Missed calls recovered</span><span class="metric-value">41</span></div>' +
+              '<div class="metric-row"><span class="metric-label">No-show rate</span><span class="metric-value">22% \u2192 9%</span></div>' +
+            '</div>' +
+            '<p class="metric-note">Numbers from your business, measured over your 30 days. That\u2019s the whole pitch.</p>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="trust">' +
+        '<div class="wrap trust-inner">' +
+          '<span>Auto shops</span><span>Dental practices</span><span>Salons</span>' +
+          '<span>HVAC &amp; trades</span><span>Restaurants</span><span>Law offices</span>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="problems" id="problems">' +
+        '<div class="wrap problems-inner">' +
+          '<div class="section-head">' +
+            '<h2 class="h2">Which of these happens to you?</h2>' +
+            '<p class="lede">Pick the one that stings. Each fix runs on its own \u2014 start with one.</p>' +
+          '</div>' +
+          '<div class="problem-grid">' + pains + '</div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="how" id="how">' +
+        '<div class="wrap how-inner">' +
+          '<div class="section-head">' +
+            '<h2 class="h2">30 days, one number</h2>' +
+            '<p class="lede">No audits you have to read. No dashboards you have to learn. One mechanism, one measured result.</p>' +
+          '</div>' +
+          '<div class="how-grid">' + how + '</div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="results" id="results">' +
+        '<div class="wrap results-inner">' +
+          '<div>' +
+            '<h2 class="h2-sm">Measured, not promised.</h2>' +
+            '<p class="results-copy">Most marketing asks you to trust a pitch. We ask you to read a report \u2014 your report, after 30 days on your actual business. If the number isn\u2019t worth $49 a month, walk away.</p>' +
+          '</div>' +
+          '<div class="stat-grid">' +
+            '<div><div class="stat-value">30</div><div class="stat-label">days free, every fix</div></div>' +
+            '<div><div class="stat-value">15<span class="unit">min</span></div><div class="stat-label">typical setup</div></div>' +
+            '<div><div class="stat-value">$0</div><div class="stat-label">until you see results</div></div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="cta-light">' +
+        '<div class="wrap cta-light-inner">' +
+          '<h2 class="h2-sm">Start with the leak that stings most.</h2>' +
+          '<p class="lede">Free for 30 days. No credit card. Cancel with one email.</p>' +
+          '<a class="btn btn-primary btn-lg" href="#/" data-scroll="problems">Find your leak</a>' +
+        '</div>' +
+      '</section>' +
+
+      siteFooter() +
+
+    '</div>';
+  }
+
+  function viewFunnel() {
+    var f = FUNNELS[state.funnel];
+    var headline = f.headlines[VERTICAL] || f.headlines['Generic local business'];
+
+    var agitate = f.agitation.map(function (a) {
+      return '<div class="agitate-item"><h3>' + esc(a.h) + '</h3><p class="body-sm">' + esc(a.p) + '</p></div>';
+    }).join('');
+
+    var steps = f.mechanism.steps.map(function (t, i) {
+      return '<div class="mech-step"><span class="mech-step-n">' + (i + 1) + '</span><span class="mech-step-t">' + esc(t) + '</span></div>';
+    }).join('');
+
+    var ba = f.beforeAfter;
+
+    var reportRows = f.report.card.rows.map(function (r) {
+      return '<div class="report-row"><span class="k">' + esc(r.k) + '</span>' +
+             '<span class="v' + (r.good ? ' is-good' : '') + '">' + esc(r.v) + '</span></div>';
+    }).join('');
+
+    var faqs = f.faqs.map(function (q) {
+      return '<div class="faq-item"><h3>' + esc(q.q) + '</h3><p>' + esc(q.a) + '</p></div>';
+    }).join('');
+
+    return '' +
+    '<div class="screen">' +
+
+      '<header class="nav">' +
+        '<div class="nav-inner">' +
+          '<button class="fnav-brand" type="button" data-go="home" aria-label="Groundwork Labs \u2014 home">' +
+            LOGO(24) + WORDMARK +
+            '<span class="crumb-sep">/</span><span class="crumb">' + esc(f.slug) + '</span>' +
+          '</button>' +
+          '<button class="btn btn-primary btn-nav fnav-cta" type="button" data-go="signup">' + esc(f.navCta) + '</button>' +
+        '</div>' +
+      '</header>' +
+
+      '<section class="fhero">' +
+        '<div class="wrap-narrow fhero-inner">' +
+          '<h1 class="h1-center">' + esc(headline) + '</h1>' +
+          '<p class="fhero-copy">' + esc(f.offerCopy) + '</p>' +
+          '<button class="btn btn-primary btn-xl" type="button" data-go="signup">' + esc(f.heroCta) + '</button>' +
+          '<p class="fhero-micro">' + esc(f.heroMicro) + '</p>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="agitate"><div class="wrap agitate-inner">' + agitate + '</div></section>' +
+
+      '<section class="mech">' +
+        '<div class="wrap mech-inner">' +
+          '<div>' +
+            '<span class="eyebrow">' + esc(f.mechanism.eyebrow) + '</span>' +
+            '<h2 class="h2-sm">' + esc(f.mechanism.heading) + '</h2>' +
+            '<div class="mech-steps">' + steps + '</div>' +
+          '</div>' +
+          '<div class="change-card">' +
+            '<p class="eyebrow-quiet">' + esc(ba.label) + '</p>' +
+            '<div class="change-rows">' +
+              '<div>' +
+                '<div class="change-head"><span class="k">' + esc(ba.nowLabel) + '</span><span class="v">' + esc(ba.nowValue) + '</span></div>' +
+                '<div class="change-track"><div class="change-fill is-now" style="width:' + ba.nowPct + '%"></div></div>' +
+              '</div>' +
+              '<div class="change-sep"><span class="line"></span><span>' + esc(ba.transition) + '</span><span class="line"></span></div>' +
+              '<div>' +
+                '<div class="change-head"><span class="k">' + esc(ba.afterLabel) + '</span><span class="v is-after">' + esc(ba.afterValue) + '</span></div>' +
+                '<div class="change-track"><div class="change-fill is-after" style="width:' + ba.afterPct + '%"></div></div>' +
+              '</div>' +
+            '</div>' +
+            '<p class="change-note">' + esc(ba.note) + '</p>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="report">' +
+        '<div class="wrap report-inner">' +
+          '<div class="report-card">' +
+            '<div class="report-card-head">' +
+              '<span class="eyebrow-quiet">' + esc(f.report.card.title) + '</span>' +
+              '<span class="who">' + esc(f.report.card.customer) + '</span>' +
+            '</div>' +
+            '<div class="report-rows">' + reportRows + '</div>' +
+          '</div>' +
+          '<div class="report-copy">' +
+            '<span class="eyebrow">' + esc(f.report.eyebrow) + '</span>' +
+            '<h2 class="h2-sm">' + esc(f.report.heading) + '</h2>' +
+            f.report.paras.map(function (p) { return '<p class="body">' + esc(p) + '</p>'; }).join('') +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="faq">' +
+        '<div class="wrap-faq faq-inner">' +
+          '<h2 class="h2-sm">Fair questions</h2>' +
+          '<div class="faq-list">' + faqs + '</div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="cta-dark">' +
+        '<div class="wrap-narrow cta-dark-inner">' +
+          '<h2 class="h2-lg">' + esc(f.finalCta.heading) + '</h2>' +
+          '<p class="cta-dark-copy">' + esc(f.finalCta.copy) + '</p>' +
+          '<button class="btn btn-primary btn-xxl" type="button" data-go="signup">' + esc(f.finalCta.cta) + '</button>' +
+          '<p class="cta-dark-micro">' + esc(f.finalCta.micro) + '</p>' +
+        '</div>' +
+      '</section>' +
+
+      siteFooter() +
+
+    '</div>';
+  }
+
+  function viewSignup() {
+    var f = FUNNELS[state.funnel];
+    var v = state.form;
+    var ready = v.businessName.trim() !== '' && v.email.trim() !== '';
+
+    var head = '' +
+      '<button class="signup-brand" type="button" data-go="funnel" data-funnel="' + esc(f.slug) + '" aria-label="Back to ' + esc(f.slug) + '">' +
+        LOGO(22) + WORDMARK +
+        '<span class="crumb-sep">/</span><span class="crumb">' + esc(f.slug) + '</span>' +
+      '</button>';
+
+    if (state.submitted) {
+      return '' +
+      '<div class="screen"><div class="signup"><div class="signup-col">' + head +
+        '<div class="confirm-card">' +
+          '<div class="confirm-check" aria-hidden="true">\u2713</div>' +
+          '<h1>You\u2019re in, ' + esc(v.businessName.trim() || 'friend') + '.</h1>' +
+          '<p class="body-sm">We\u2019ll email you within one business day to connect your review flow. Day 1 of your 30 starts when the mechanism is live \u2014 not before.</p>' +
+          '<div class="next-panel">' +
+            '<span class="eyebrow-quiet">What happens next</span>' +
+            '<span>1 \u2014 We connect to where your completed jobs live</span>' +
+            '<span>2 \u2014 Every customer gets an automatic follow-up</span>' +
+            '<span>3 \u2014 Day 30: you see exactly how many reviews it generated</span>' +
+          '</div>' +
+        '</div>' +
+      '</div></div>' + siteFooter() + '</div>';
+    }
+
+    var industryOpts = ['<option value="">Choose one</option>'].concat(
+      INDUSTRIES.map(function (o) {
+        return '<option' + (v.industry === o ? ' selected' : '') + '>' + esc(o) + '</option>';
+      })
+    ).join('');
+
+    var volumeOpts = ['<option value="">Choose one</option>'].concat(
+      VOLUMES.map(function (o) {
+        return '<option' + (v.monthlyVolume === o ? ' selected' : '') + '>' + esc(o) + '</option>';
+      })
+    ).join('');
+
+    return '' +
+    '<div class="screen"><div class="signup"><div class="signup-col">' + head +
+      '<div class="signup-card">' +
+        '<h1>Start your 30-day trial</h1>' +
+        '<p class="body-sm">Three questions. We\u2019ll reach out within one business day to connect your systems.</p>' +
+        '<form class="form" novalidate>' +
+          '<label class="field">Business name' +
+            '<input type="text" name="businessName" value="' + esc(v.businessName) + '" placeholder="e.g. Northside Auto Care" autocomplete="organization">' +
+          '</label>' +
+          '<label class="field">What kind of business?' +
+            '<select name="industry">' + industryOpts + '</select>' +
+          '</label>' +
+          '<label class="field">Roughly how many customers per month?' +
+            '<select name="monthlyVolume">' + volumeOpts + '</select>' +
+          '</label>' +
+          '<label class="field">Email' +
+            '<input type="email" name="email" value="' + esc(v.email) + '" placeholder="you@business.com" autocomplete="email">' +
+          '</label>' +
+          '<button type="submit" class="submit' + (ready ? ' is-ready' : '') + '"' + (ready ? '' : ' disabled aria-disabled="true"') + '>Start my 30 days</button>' +
+          '<p class="form-micro">No credit card. Cancel anytime during the trial.</p>' +
+        '</form>' +
+      '</div>' +
+    '</div></div>' + siteFooter() + '</div>';
+  }
+
+  function viewDashboard() {
+    var rows = DASH.funnels.map(function (f) {
+      return '' +
+        '<div class="trow tbody-row">' +
+          '<span class="name">' + esc(f.name) + '</span>' +
+          '<span class="dim">' + esc(f.spend) + '</span>' +
+          '<span class="dim">' + esc(f.leads) + '</span>' +
+          '<span class="dim">' + esc(f.cpl) + '</span>' +
+          '<span class="dim">' + esc(f.trials) + '</span>' +
+          '<span class="strong">' + esc(f.customers) + '</span>' +
+          '<span><span class="badge badge-' + esc(f.kind) + '">' + esc(f.decision) + '</span></span>' +
+        '</div>';
+    }).join('');
+
+    var ladder = DASH.ladder.map(function (s, i) {
+      return '' +
+        '<div class="ladder-row">' +
+          '<span class="k">' + esc(s.label) + '</span>' +
+          '<div class="ladder-track">' +
+            '<div class="ladder-fill ' + (i >= 3 ? 'is-solid' : 'is-soft') + '" style="width:' + ladderPct(s.n) + '%"></div>' +
+          '</div>' +
+          '<span class="v">' + esc(s.value) + '</span>' +
+        '</div>';
+    }).join('');
+
+    var thresholds = DASH.thresholds.map(function (t) {
+      return '<div><span class="thresh-n">' + esc(t.n) + '</span> ' + esc(t.t) + '</div>';
+    }).join('');
+
+    return '' +
+    '<div class="dash"><div class="wrap-dash">' +
+      '<div class="dash-head">' +
+        '<h1>Experiment engine</h1>' +
+        '<span class="dash-meta">' + esc(DASH.cycle) + '</span>' +
+      '</div>' +
+      '<p class="dash-sub">$250 per funnel per cycle. Kill losers, expand winners.</p>' +
+
+      '<div class="table-card">' +
+        '<div class="trow thead">' +
+          '<span>Funnel</span><span>Spend</span><span>Leads</span><span>Cost / lead</span>' +
+          '<span>Trials</span><span>Customers</span><span>Decision</span>' +
+        '</div>' + rows +
+      '</div>' +
+
+      '<div class="dash-grid">' +
+        '<div class="ladder-card">' +
+          '<p class="eyebrow-quiet">Stage ladder \u2014 /reviews</p>' +
+          '<p class="ladder-sub">Each stage has to earn the next.</p>' +
+          '<div class="ladder-rows">' + ladder + '</div>' +
+        '</div>' +
+        '<div class="thresh-card">' +
+          '<p class="eyebrow-quiet">Build thresholds</p>' +
+          '<div class="thresh-list">' + thresholds + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div></div>';
+  }
+
+  /* ==========================================================
+     CONTENT PAGES
+     ========================================================== */
+
+  var LAST_UPDATED = '8 August 2026';
+
+  function docShell(o) {
+    return '' +
+    '<div class="screen">' + siteNav() +
+      '<section class="doc-head"><div class="wrap-faq doc-head-inner">' +
+        '<span class="eyebrow">' + esc(o.eyebrow) + '</span>' +
+        '<h1>' + esc(o.title) + '</h1>' +
+        (o.lede ? '<p class="lede">' + esc(o.lede) + '</p>' : '') +
+        (o.meta ? '<p class="doc-meta">' + esc(o.meta) + '</p>' : '') +
+      '</div></section>' +
+      '<section class="doc-body"><div class="wrap-faq doc-body-inner">' +
+        (o.note || '') +
+        (o.toc || '') +
+        '<div class="doc">' + o.body + '</div>' +
+      '</div></section>' +
+      siteFooter() +
+    '</div>';
+  }
+
+  /* Builds the "on this page" index and the body from one list of sections. */
+  function docSections(list) {
+    return {
+      toc: '<nav class="doc-toc" aria-label="On this page">' +
+             '<p class="eyebrow-quiet">On this page</p><ol>' +
+             list.map(function (sn) {
+               return '<li><a href="#' + sn.id + '" data-scroll="' + sn.id + '">' + esc(sn.h) + '</a></li>';
+             }).join('') +
+           '</ol></nav>',
+      body: list.map(function (sn) {
+        return '<h2 id="' + sn.id + '">' + esc(sn.h) + '</h2>' + sn.html;
+      }).join('')
+    };
+  }
+
+  /* Placeholder that has to be filled in before launch. */
+  function fill(t) { return '<span class="fill">' + esc(t) + '</span>'; }
+
+  /* ---------------------------------------------------------- About ---- */
+
+  var ABOUT_STEPS = [
+    { n: '01', h: 'Pick one leak', p: 'You choose the problem that stings most. Every fix runs on its own, so there is nothing to bundle and nothing to phase.' },
+    { n: '02', h: 'Install one mechanism', p: 'About 15 minutes of setup against the systems you already use. Nothing changes about how your team works day to day.' },
+    { n: '03', h: 'Count for 30 days', p: 'The mechanism runs on your real customers. Every action it takes is logged, so nothing rests on our word for it.' },
+    { n: '04', h: 'Decide', p: 'On day 30 you get one report with one number. Keep it running for $49 a month, or cancel with one email and keep the results.' }
+  ];
+
+  var ABOUT_NOTS = [
+    'No retainers and no minimum term.',
+    'No strategy calls or discovery workshops.',
+    'No rebrands, rebuilds, or logo work.',
+    'No dashboards you have to learn.',
+    'No bundles — each fix is priced and cancelled on its own.',
+    'No claims we cannot put a number next to.'
+  ];
+
+  function viewAbout() {
+    var steps = ABOUT_STEPS.map(function (s2) {
+      return '<div class="how-step">' +
+               '<span class="how-num">' + s2.n + '</span>' +
+               '<h3>' + esc(s2.h) + '</h3>' +
+               '<p class="body-sm">' + esc(s2.p) + '</p>' +
+             '</div>';
+    }).join('');
+
+    var nots = ABOUT_NOTS.map(function (t) {
+      return '<div class="not-item"><span class="not-mark">\u2014</span><span>' + esc(t) + '</span></div>';
+    }).join('');
+
+    return '' +
+    '<div class="screen">' + siteNav() +
+
+      '<section class="doc-head"><div class="wrap-faq doc-head-inner">' +
+        '<span class="eyebrow">About</span>' +
+        '<h1>We\u2019d rather be measured than believed.</h1>' +
+        '<p class="lede">Groundwork Labs builds one narrow fix at a time for local businesses, runs it on your real customers for 30 days, and hands you the number it produced.</p>' +
+      '</div></section>' +
+
+      '<section class="about-why"><div class="wrap-faq about-why-inner">' +
+        '<p class="about-lead">Local businesses get sold strategy. Retainers, audits, brand refreshes, forty-page reports \u2014 all of it asks an owner to believe something before anything has been measured.</p>' +
+        '<p class="about-lead">Meanwhile the money leaks somewhere specific and boring. A call nobody answered. A review nobody asked for. An appointment nobody confirmed. A quote nobody followed up on. These are small problems with real numbers attached, and most of them can be fixed in an afternoon.</p>' +
+        '<p class="about-lead">So that is all we do. If the number on your day-30 report isn\u2019t worth $49 a month, you walk away and keep whatever it earned you. We would rather lose the sale than win it on a story.</p>' +
+      '</div></section>' +
+
+      '<section class="about-steps"><div class="wrap about-steps-inner">' +
+        '<div class="section-head">' +
+          '<h2 class="h2">How every fix works</h2>' +
+          '<p class="lede">The same four steps, whichever leak you start with.</p>' +
+        '</div>' +
+        '<div class="step4">' + steps + '</div>' +
+      '</div></section>' +
+
+      '<section class="nots"><div class="wrap nots-inner">' +
+        '<div class="section-head">' +
+          '<h2 class="h2">What we don\u2019t do</h2>' +
+          '<p class="lede">Worth saying plainly, because most of it is what you\u2019d expect from an agency.</p>' +
+        '</div>' +
+        '<div class="not-grid">' + nots + '</div>' +
+      '</div></section>' +
+
+      '<section class="results"><div class="wrap results-inner">' +
+        '<div>' +
+          '<h2 class="h2-sm">Pricing, in one line.</h2>' +
+          '<p class="results-copy">$49 a month per fix, after 30 days free. No setup fee, no minimum term, and no per-message charges. Run three fixes and you pay for three; cancel two and you pay for one.</p>' +
+        '</div>' +
+        '<div class="stat-grid">' +
+          '<div><div class="stat-value">$49</div><div class="stat-label">per month, per fix</div></div>' +
+          '<div><div class="stat-value">30</div><div class="stat-label">days free, every fix</div></div>' +
+          '<div><div class="stat-value">1</div><div class="stat-label">email to cancel</div></div>' +
+        '</div>' +
+      '</div></section>' +
+
+      '<section class="cta-light"><div class="wrap cta-light-inner">' +
+        '<h2 class="h2-sm">Start with the leak that stings most.</h2>' +
+        '<p class="lede">Free for 30 days. No credit card. Cancel with one email.</p>' +
+        '<a class="btn btn-primary btn-lg" href="#/" data-scroll="problems">Find your leak</a>' +
+      '</div></section>' +
+
+      siteFooter() +
+    '</div>';
+  }
+
+  /* -------------------------------------------------------- Privacy ---- */
+
+  /* DRAFT NOTICE — remove this banner once the document has been reviewed. */
+  var DRAFT_NOTE =
+    '<div class="doc-note"><strong>Draft for review.</strong> This document was written to match how the product actually works, ' +
+    'but it has not been reviewed by a lawyer. Fill in the highlighted placeholders and have counsel check it before launch \u2014 ' +
+    'especially the parts covering automated text messaging, which is regulated differently in every market you operate in.</div>';
+
+  function viewPrivacy() {
+    var d = docSections([
+      { id: 'p-overview', h: 'Who we are', html:
+        '<p>Groundwork Labs is a trading name of ' + fill('[legal entity name]') + ', registered at ' + fill('[registered address]') + '. In this policy, \u201cwe\u201d and \u201cus\u201d mean that company, and \u201cyou\u201d means the business that signs up for one of our fixes.</p>' +
+        '<p>This policy explains what we collect, why we collect it, who else sees it, and what you can ask us to do with it. It covers our website, the signup flow, and the mechanisms we run on your behalf.</p>' },
+
+      { id: 'p-roles', h: 'Two different kinds of information', html:
+        '<p>Keeping these apart matters, because your rights and ours are different in each case.</p>' +
+        '<p><strong>Your business information</strong> is data about you and your account \u2014 your name, your business, your email, your billing details. We decide how that is handled, so for this information we are the data controller.</p>' +
+        '<p><strong>Your customers\u2019 information</strong> is data that reaches us from your booking system, phone line, inbox, or lead list \u2014 names, phone numbers, email addresses, appointment and job records. We only ever handle it to run the mechanism you asked us to run. You decide what happens to it; we act on your instructions. For this information you are the controller and we are your processor, or \u201cservice provider\u201d under US state privacy laws.</p>' +
+        '<p>We do not use your customers\u2019 information to build our own marketing lists, to train models, or to sell to anyone.</p>' },
+
+      { id: 'p-collect', h: 'What we collect', html:
+        '<h3>From you, directly</h3>' +
+        '<ul>' +
+          '<li>Business name, business type, rough monthly customer volume, and email address, from the trial signup form.</li>' +
+          '<li>Contact details and anything else you send us by email or during setup.</li>' +
+          '<li>Billing information after a trial converts. Card details are handled by our payment processor \u2014 we never see or store a full card number.</li>' +
+        '</ul>' +
+        '<h3>From the systems you connect</h3>' +
+        '<ul>' +
+          '<li>Customer names, phone numbers, and email addresses.</li>' +
+          '<li>Job, appointment, invoice, or quote records \u2014 enough to know who to contact and when.</li>' +
+          '<li>Message and call metadata: what was sent, when, whether it was delivered, and whether someone replied.</li>' +
+        '</ul>' +
+        '<p>We ask for read access wherever read access is enough, and we ask for the narrowest scope the integration allows.</p>' +
+        '<h3>Automatically, from our website</h3>' +
+        '<ul>' +
+          '<li>IP address, browser and device type, pages viewed, and the site or ad that referred you.</li>' +
+          '<li>Cookie identifiers, as described under ' + '<a href="#p-cookies" data-scroll="p-cookies">cookies and analytics</a>' + '.</li>' +
+        '</ul>' },
+
+      { id: 'p-use', h: 'How we use it', html:
+        '<ul>' +
+          '<li><strong>To run the mechanism you signed up for</strong> \u2014 sending the follow-ups, reminders, or replies that are the whole point of the service.</li>' +
+          '<li><strong>To produce your day-30 report</strong> and the ongoing counts that follow it.</li>' +
+          '<li><strong>To set up and support your account</strong>, including the setup conversation and anything you email us about.</li>' +
+          '<li><strong>To bill you</strong> once a trial converts.</li>' +
+          '<li><strong>To keep the service working and secure</strong> \u2014 diagnosing faults, preventing abuse, and meeting our legal obligations.</li>' +
+          '<li><strong>To improve the service in aggregate</strong>, using figures that cannot identify an individual customer of yours.</li>' +
+        '</ul>' +
+        '<p>Where the law requires a lawful basis, ours is the performance of our contract with you, our legitimate interest in running and securing the service, and consent where consent is required \u2014 for example, non-essential cookies.</p>' },
+
+      { id: 'p-messaging', h: 'Text messages and consent', html:
+        '<p>Our mechanisms send messages to your customers, in your name. That makes consent a shared responsibility, and it is worth being precise about who holds which part.</p>' +
+        '<p><strong>You</strong> confirm that you have the right to contact the people on the list you connect, and that doing so is lawful where they are. You also approve the wording of every message before anything sends.</p>' +
+        '<p><strong>We</strong> include an opt-out in every message stream, honour opt-outs immediately and permanently across every mechanism you run, cap how often anyone can be contacted, and keep a record of what was sent to whom.</p>' +
+        '<p>If someone tells us they no longer want to hear from you, we will stop contacting them and tell you. We will not send on your behalf into a market where we do not believe the sending is lawful.</p>' },
+
+      { id: 'p-sharing', h: 'Who else sees it', html:
+        '<p>We do not sell personal information and we do not share it for cross-context behavioural advertising. We do rely on a small number of providers to run the service:</p>' +
+        '<ul>' +
+          '<li><strong>Messaging and telephony providers</strong>, to deliver texts and handle calls.</li>' +
+          '<li><strong>Cloud hosting and database providers</strong>, where the service runs.</li>' +
+          '<li><strong>Our payment processor</strong>, for billing.</li>' +
+          '<li><strong>Error monitoring and product analytics</strong>, to keep the service working.</li>' +
+          '<li><strong>The platforms you ask us to connect</strong> \u2014 your booking system, review platform, or social accounts \u2014 which have their own privacy terms.</li>' +
+        '</ul>' +
+        '<p>A current list of these providers is available at ' + fill('[link to subprocessor list]') + '. Each is bound by a contract limiting them to processing on our instructions. We may also disclose information where the law requires it, or in connection with a merger or sale of the business \u2014 in which case this policy continues to apply until you are told otherwise.</p>' },
+
+      { id: 'p-retention', h: 'How long we keep it', html:
+        '<ul>' +
+          '<li><strong>Your customers\u2019 information:</strong> for as long as your account is active, and deleted within 30 days of your account closing.</li>' +
+          '<li><strong>Message and delivery logs:</strong> 24 months, because they are how we evidence what was sent and when.</li>' +
+          '<li><strong>Your account and billing records:</strong> as long as tax and accounting law requires, typically ' + fill('[6/7]') + ' years.</li>' +
+          '<li><strong>Opt-out records:</strong> kept indefinitely, because that is the only way to be sure someone is never contacted again.</li>' +
+        '</ul>' +
+        '<p>You can ask us to delete your customers\u2019 information at any time and we will do it within 30 days, other than the opt-out records above.</p>' },
+
+      { id: 'p-security', h: 'How we protect it', html:
+        '<p>Data is encrypted in transit and at rest. Access is limited to the people who need it to run the service, and every access is logged. We never ask for passwords by email; connections are made through the platform\u2019s own authorisation flow wherever one exists, and you can revoke that access at any time from your side.</p>' +
+        '<p>No system is perfect. If a breach affects your data, we will tell you without undue delay and within any timeframe the law sets, along with what happened and what we are doing about it.</p>' },
+
+      { id: 'p-rights', h: 'Your rights', html:
+        '<p>Depending on where you or your customers are, the following may apply: the right to access a copy of the information held, to correct it, to delete it, to restrict or object to processing, to receive it in a portable format, and to withdraw consent.</p>' +
+        '<p>If you are one of our customers, email us and we will action it. If you are a customer of one of our customers and want your information removed, you can reply STOP to any message to stop contact immediately, or contact us and we will pass the request to the business and act on their instruction.</p>' +
+        '<p>We will not discriminate against you for exercising any of these rights. If you are in the UK or EU and are unhappy with our response, you can complain to your local supervisory authority. Our supervisory authority is ' + fill('[authority]') + '.</p>' },
+
+      { id: 'p-transfers', h: 'Where data is processed', html:
+        '<p>We process data in ' + fill('[country/region]') + '. Some of our providers operate elsewhere. Where information moves across a border, we rely on the transfer mechanisms the law provides \u2014 adequacy decisions where they exist, and standard contractual clauses otherwise. You can ask us for a copy of the relevant safeguards.</p>' },
+
+      { id: 'p-cookies', h: 'Cookies and analytics', html:
+        '<p>Our site uses a small number of cookies. Essential cookies keep the site working and cannot be turned off. Analytics cookies tell us which pages people read and where they leave, and are only set with your consent where consent is required.</p>' +
+        '<p>We do not use advertising cookies that follow you across other websites. You can clear or block cookies in your browser; the site will still work.</p>' },
+
+      { id: 'p-children', h: 'Children', html:
+        '<p>The service is sold to businesses and is not directed at children. We do not knowingly collect information from anyone under 16. If you believe a child\u2019s information has reached us, contact us and we will delete it.</p>' },
+
+      { id: 'p-changes', h: 'Changes to this policy', html:
+        '<p>If we change this policy we will update the date at the top of this page. If a change materially affects how we handle your information, we will email you before it takes effect. Continuing to use the service after that means the updated policy applies.</p>' },
+
+      { id: 'p-contact', h: 'Contact us', html:
+        '<p>Email <a href="mailto:' + COMMON.email + '">' + COMMON.email + '</a> and a person will answer. For formal data protection requests, write to ' + fill('[data protection contact and postal address]') + '.</p>' }
+    ]);
+
+    return docShell({
+      eyebrow: 'Legal',
+      title: 'Privacy policy',
+      lede: 'What we collect, why we collect it, and what you can ask us to do with it.',
+      meta: 'Last updated ' + LAST_UPDATED,
+      note: DRAFT_NOTE,
+      toc: d.toc,
+      body: d.body
+    });
+  }
+
+  /* ---------------------------------------------------------- Terms ---- */
+
+  function viewTerms() {
+    var d = docSections([
+      { id: 't-agreement', h: 'This agreement', html:
+        '<p>These terms are between you and ' + fill('[legal entity name]') + ', trading as Groundwork Labs. By starting a trial or using the service, you agree to them. If you are agreeing on behalf of a business, you confirm you have the authority to bind that business, and \u201cyou\u201d means the business.</p>' +
+        '<p>Our <a href="#/privacy" data-go="privacy">privacy policy</a> forms part of this agreement.</p>' },
+
+      { id: 't-service', h: 'What the service is', html:
+        '<p>We install and run one automated mechanism at a time against systems you already use \u2014 following up on completed jobs, texting back missed calls, confirming appointments, working an old lead list, or answering first messages \u2014 and we measure what it produces over 30 days.</p>' +
+        '<p>The service is the mechanism plus the measurement. It is not marketing consultancy, and we do not provide legal, tax, or business advice.</p>' },
+
+      { id: 't-trial', h: 'The 30-day trial', html:
+        '<p>Every fix starts with 30 days free and no card required. <strong>Day 1 begins when the mechanism goes live</strong>, not when you sign up \u2014 so any delay in connecting your systems does not eat into the trial.</p>' +
+        '<p>At the end of the trial you get a report. If you do nothing, the trial ends and nothing is charged. To continue, you tell us to continue.</p>' },
+
+      { id: 't-fees', h: 'Fees, billing, and cancellation', html:
+        '<ul>' +
+          '<li>$49 per month per fix after the trial, in ' + fill('[currency]') + ', charged monthly in advance.</li>' +
+          '<li>Taxes are added where they apply.</li>' +
+          '<li>Message and call costs are included. If your volume is far outside the normal range for your business type, we will talk to you before anything changes \u2014 never after.</li>' +
+          '<li>Cancel by sending one email. Cancellation takes effect at the end of the current month and we do not pro-rate part months.</li>' +
+          '<li>We may change prices with 30 days\u2019 notice. If you do not want the new price, cancel before it takes effect.</li>' +
+        '</ul>' +
+        '<p>Failed payments are retried; if payment is still outstanding after 14 days we may pause the mechanism.</p>' },
+
+      { id: 't-accounts', h: 'Your account and connected systems', html:
+        '<p>You are responsible for the accuracy of what you tell us and for who you let into your account. Tell us promptly if you think someone has access who should not.</p>' +
+        '<p>You grant us permission to access the systems you connect, only to the extent needed to run and measure the mechanism. You can revoke that access at any time \u2014 doing so will usually stop the mechanism working, which is expected.</p>' },
+
+      { id: 't-obligations', h: 'Your responsibilities when we message on your behalf', html:
+        '<p>This is the most important section in the agreement, because we send messages in your name.</p>' +
+        '<ul>' +
+          '<li>You confirm you have a lawful basis to contact each person on any list you connect or upload \u2014 for most fixes, that they are an existing or prospective customer who gave you their number in the course of doing business.</li>' +
+          '<li>You approve the wording of every message before it sends, and you remain responsible for that wording.</li>' +
+          '<li>You are responsible for complying with the marketing and messaging laws that apply to you and your customers. Depending on where you operate that may include the TCPA and CAN-SPAM in the United States, CASL in Canada, PECR and UK GDPR in the United Kingdom, the ePrivacy Directive and GDPR in the EU, and the Spam Act in Australia. Carrier registration requirements such as A2P 10DLC may also apply.</li>' +
+          '<li>You will not connect a purchased, scraped, or rented list.</li>' +
+          '<li>You will honour opt-outs in your own systems, not just in ours.</li>' +
+        '</ul>' +
+        '<p>We build opt-outs, frequency caps, and suppression lists into every mechanism, and we will refuse or stop a send we believe is unlawful. That does not shift the underlying responsibility to us.</p>' },
+
+      { id: 't-acceptable', h: 'Acceptable use', html:
+        '<p>You will not use the service to send anything unlawful, deceptive, harassing, or misleading about who is contacting the recipient; to contact people who have opted out; to reverse-engineer or resell the service; or to interfere with its operation or security.</p>' +
+        '<p>You will not use the mechanism to solicit reviews in a way that breaches the review platform\u2019s own rules \u2014 for example by offering payment for reviews, or by asking only customers you expect to be positive.</p>' },
+
+      { id: 't-data', h: 'Data and content', html:
+        '<p>You own your data and your customers\u2019 data. Nothing here transfers ownership to us.</p>' +
+        '<p>You grant us a limited licence to host, process, and transmit that data solely to provide the service and produce your reports. We may use aggregated, de-identified figures to improve the service, provided they cannot identify you or any individual.</p>' +
+        '<p>Where we process your customers\u2019 personal data, we do so as your processor and on your documented instructions. If you need a separate data processing agreement, email us and we will sign one.</p>' },
+
+      { id: 't-results', h: 'Results are measured, not guaranteed', html:
+        '<p>Every number on this website is an example from a real account, and no example predicts your result. Outcomes depend on your customer volume, your industry, your local market, the quality of the data you connect, and how quickly you reply to the people the mechanism brings back.</p>' +
+        '<p>What we commit to is the measurement: an honest count of what the mechanism did, including when the answer is that it did not work. We do not guarantee any specific number of reviews, calls, bookings, or customers.</p>' },
+
+      { id: 't-third-party', h: 'Third-party services', html:
+        '<p>The service connects to platforms we do not control, including booking systems, review platforms, social networks, and telephony providers. Those platforms can change their terms, pricing, or APIs at any time, which may affect or interrupt a mechanism.</p>' +
+        '<p>You are responsible for complying with the terms of any platform you connect. We are not liable for a third party\u2019s acts, outages, or changes, though we will tell you promptly when one affects you.</p>' },
+
+      { id: 't-ip', h: 'Intellectual property', html:
+        '<p>We own the service, its software, its mechanisms, and the Groundwork Labs name and marks. You get a non-exclusive, non-transferable right to use the service while this agreement is in force. You own your business\u2019s brand, content, and data.</p>' +
+        '<p>If you send us feedback, we may use it to improve the service without owing you anything for it.</p>' },
+
+      { id: 't-term', h: 'Suspension and termination', html:
+        '<p>You may cancel at any time by email. We may suspend or terminate the service if you materially breach these terms, if payment is more than 14 days overdue, or if continuing would put us in breach of the law or a provider\u2019s rules. Where the situation allows, we will warn you first and give you a chance to fix it.</p>' +
+        '<p>On termination, we stop the mechanism, you can export your reports for 30 days, and we delete your customers\u2019 data as described in the privacy policy. Any fees already accrued remain payable.</p>' },
+
+      { id: 't-warranty', h: 'Disclaimers', html:
+        '<p>We provide the service with reasonable skill and care, but we do not warrant that it will be uninterrupted, error-free, or that it will produce any particular result. To the fullest extent the law allows, and except as expressly stated here, the service is provided \u201cas is\u201d and we disclaim all other warranties, express or implied.</p>' +
+        '<p>Nothing in this agreement limits any right you have that cannot lawfully be limited, including consumer rights that apply to you.</p>' },
+
+      { id: 't-liability', h: 'Limitation of liability', html:
+        '<p>Neither party is liable for indirect or consequential loss, or for loss of profit, revenue, goodwill, or anticipated savings.</p>' +
+        '<p>Our total liability arising out of or in connection with this agreement is capped at the fees you paid us in the 12 months before the claim arose, or ' + fill('[floor amount]') + ' if that is greater.</p>' +
+        '<p>Neither party excludes liability for death or personal injury caused by negligence, for fraud, or for anything else that cannot lawfully be excluded.</p>' },
+
+      { id: 't-indemnity', h: 'Indemnity', html:
+        '<p>You will indemnify us against claims, fines, and reasonable costs arising from your breach of the responsibilities set out under <a href="#t-obligations" data-scroll="t-obligations">messaging on your behalf</a> or <a href="#t-acceptable" data-scroll="t-acceptable">acceptable use</a> \u2014 in particular, claims that a message we sent on your instruction was sent without a lawful basis.</p>' },
+
+      { id: 't-changes', h: 'Changes to these terms', html:
+        '<p>We may update these terms. If a change materially affects your rights or obligations, we will email you at least 30 days before it takes effect. Continuing to use the service after that date means you accept the updated terms; if you would rather not, cancel before then.</p>' },
+
+      { id: 't-law', h: 'Governing law and disputes', html:
+        '<p>This agreement is governed by the laws of ' + fill('[jurisdiction]') + ', and the courts of ' + fill('[jurisdiction]') + ' have exclusive jurisdiction over any dispute.</p>' +
+        '<p>Before starting formal proceedings, both sides agree to email the other and try to resolve the matter within 30 days. Most things are a misunderstanding and get sorted in one conversation.</p>' },
+
+      { id: 't-contact', h: 'Contact', html:
+        '<p>Questions about these terms go to <a href="mailto:' + COMMON.email + '">' + COMMON.email + '</a>, or write to us at ' + fill('[registered address]') + '.</p>' }
+    ]);
+
+    return docShell({
+      eyebrow: 'Legal',
+      title: 'Terms of service',
+      lede: 'What we do, what it costs, and who is responsible for what.',
+      meta: 'Last updated ' + LAST_UPDATED,
+      note: DRAFT_NOTE,
+      toc: d.toc,
+      body: d.body
+    });
+  }
+
+  /* ==========================================================
+     RENDER
+     ========================================================== */
+  var app = document.getElementById('app');
+
+  var TITLES = {
+    home: 'Groundwork Labs \u2014 Every business leaks money somewhere.',
+    signup: 'Start your 30-day trial \u2014 Groundwork Labs',
+    dashboard: 'Experiment engine \u2014 Groundwork Labs',
+    about: 'About \u2014 Groundwork Labs',
+    privacy: 'Privacy policy \u2014 Groundwork Labs',
+    terms: 'Terms of service \u2014 Groundwork Labs'
+  };
+
+  function render() {
+    var html;
+    if (state.screen === 'funnel') html = viewFunnel();
+    else if (state.screen === 'signup') html = viewSignup();
+    else if (state.screen === 'dashboard') html = viewDashboard();
+    else if (state.screen === 'about') html = viewAbout();
+    else if (state.screen === 'privacy') html = viewPrivacy();
+    else if (state.screen === 'terms') html = viewTerms();
+    else html = viewHome();
+
+    app.innerHTML = html;
+    document.title = state.screen === 'funnel'
+      ? (FUNNELS[state.funnel].title + ' \u2014 Groundwork Labs')
+      : (TITLES[state.screen] || TITLES.home);
+    renderPreviewBar();
+  }
+
+  /* ==========================================================
+     EVENTS (delegated — survives re-render)
+     ========================================================== */
+  document.addEventListener('click', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
+
+    var scroller = e.target.closest('[data-scroll]');
+    if (scroller) {
+      e.preventDefault();
+      var id = scroller.getAttribute('data-scroll');
+      var wasOpen = state.menuOpen;
+      state.menuOpen = false;
+      if (document.getElementById(id)) {
+        // Target is on the current page (in-page anchor or home section).
+        if (wasOpen) render();
+        scrollTo_(id);
+      } else {
+        // Section lives on the home page — go there first, then scroll.
+        go('home');
+        window.requestAnimationFrame(function () { scrollTo_(id); });
+      }
+      return;
+    }
+
+    var burger = e.target.closest('[data-menu]');
+    if (burger) {
+      state.menuOpen = !state.menuOpen;
+      render();
+      return;
+    }
+
+    var nav = e.target.closest('[data-go]');
+    if (nav) {
+      e.preventDefault();
+      go(nav.getAttribute('data-go'), nav.getAttribute('data-funnel'));
+      return;
+    }
+  });
+
+  function scrollTo_(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var nav = document.querySelector('.nav');
+    var offset = nav ? nav.getBoundingClientRect().height : 68;
+    var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  document.addEventListener('input', function (e) {
+    var name = e.target.name;
+    if (name && Object.prototype.hasOwnProperty.call(state.form, name)) {
+      state.form[name] = e.target.value;
+      // Only the submit button's enabled state depends on this — patch in place
+      // so the field keeps focus and the caret position.
+      var btn = document.querySelector('.submit');
+      if (btn) {
+        var ready = state.form.businessName.trim() !== '' && state.form.email.trim() !== '';
+        btn.classList.toggle('is-ready', ready);
+        btn.disabled = !ready;
+        btn.setAttribute('aria-disabled', ready ? 'false' : 'true');
+      }
+    }
+  });
+
+  document.addEventListener('change', function (e) {
+    var name = e.target.name;
+    if (name && Object.prototype.hasOwnProperty.call(state.form, name)) {
+      state.form[name] = e.target.value;
+    }
+  });
+
+  document.addEventListener('submit', function (e) {
+    if (!e.target.classList.contains('form')) return;
+    e.preventDefault();
+    var ready = state.form.businessName.trim() !== '' && state.form.email.trim() !== '';
+    if (!ready) return;
+    state.submitted = true;
+    render();
+    window.scrollTo(0, 0);
+  });
+
+  window.addEventListener('hashchange', function () {
+    readHash();
+    render();
+    window.scrollTo(0, 0);
+  });
+
+  /* ==========================================================
+     PREVIEW SWITCHER — delete this section for production
+     ========================================================== */
+  var previewBar = document.getElementById('previewBar');
+  var previewDismissed = false;
+
+  function renderPreviewBar() {
+    if (!previewBar) return;
+    if (previewDismissed) { previewBar.style.display = 'none'; return; }
+    var items = [
+      { label: 'Home', screen: 'home' },
+      { label: '/reviews', screen: 'funnel' },
+      { label: 'Signup', screen: 'signup' },
+      { label: 'Dashboard', screen: 'dashboard' }
+    ];
+    previewBar.innerHTML = items.map(function (i) {
+      return '<button type="button" data-preview="' + i.screen + '" aria-current="' +
+        (state.screen === i.screen ? 'true' : 'false') + '">' + i.label + '</button>';
+    }).join('') + '<button type="button" class="close" data-preview-close aria-label="Hide preview switcher">\u00d7</button>';
+  }
+
+  previewBar.addEventListener('click', function (e) {
+    if (e.target.closest('[data-preview-close]')) {
+      previewDismissed = true;
+      previewBar.style.display = 'none';
+      return;
+    }
+    var b = e.target.closest('[data-preview]');
+    if (b) go(b.getAttribute('data-preview'), 'reviews');
+  });
+
+  /* ==========================================================
+     BOOT
+     ========================================================== */
+  if (!window.location.hash) window.location.hash = '#/';
+  readHash();
+  render();
+})();
+</script>
+</body>
+</html>
