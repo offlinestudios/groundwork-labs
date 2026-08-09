@@ -8,4 +8,4 @@ Open `index.html` in a modern web browser, or serve the directory with any stati
 
 ## Deployment
 
-The website is designed for static hosting. Once a hosting provider is connected to this repository, configure the site root to serve `index.html`.
+The website is designed for static hosting, including GitHub Pages. The main page is `index.html`; `404.html` intentionally mirrors it so direct visits to clean client-side paths such as `/about` or `/reviews` render correctly on GitHub Pages. The browser icon is `favicon.svg` and uses the Ground Work Labs mark.
