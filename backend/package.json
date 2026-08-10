@@ -1,0 +1,14 @@
+{
+  "name": "groundwork-labs-intake",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Secure lead intake, storage, and transactional email workflow for Ground Work Labs.",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "resend": "^6.1.0"
+  }
+}

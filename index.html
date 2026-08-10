@@ -399,7 +399,8 @@ h1,h2,h3,p{margin:0;}
 }
 .submit.is-ready{background:var(--green);cursor:pointer;}
 .submit.is-ready:hover{background:var(--green-hover);}
-.form-micro{font-size:13px;color:var(--muted-2);text-align:center;}
+  .form-micro{font-size:13px;color:var(--muted-2);text-align:center;}
+  .form-error{margin:0;color:var(--danger-fg);font-size:13px;line-height:1.45;text-align:center;}
 
 .confirm-card{
   background:var(--white);border:1px solid var(--border);border-radius:16px;
@@ -1154,12 +1155,22 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
   /* ==========================================================
      STATE
      ========================================================== */
+  var LEAD_API_URL = 'https://groundwork-labs-intake-julian-ross-projects.vercel.app/api/trial';
+
+  function newSubmissionId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+    return 'lead-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+  }
+
   var state = {
     screen: 'home',      // home | funnel | signup | dashboard
     funnel: 'reviews',
     menuOpen: false,
     form: { businessName: '', industry: '', monthlyVolume: '', email: '' },
-    submitted: false
+    submitted: false,
+    submitting: false,
+    formError: '',
+    submissionId: newSubmissionId()
   };
 
   /* Client-side routes use clean paths. GitHub Pages serves this project from
@@ -1555,6 +1566,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
           '<label class="field">Business name' +
             '<input type="text" name="businessName" value="' + esc(v.businessName) + '" placeholder="e.g. Northside Auto Care" autocomplete="organization">' +
           '</label>' +
+          '<input class="sr-only" type="text" name="website" value="" autocomplete="off" tabindex="-1" aria-hidden="true">' +
           '<label class="field">What kind of business?' +
             '<select name="industry">' + industryOpts + '</select>' +
           '</label>' +
@@ -1564,7 +1576,8 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
           '<label class="field">Email' +
             '<input type="email" name="email" value="' + esc(v.email) + '" placeholder="you@business.com" autocomplete="email">' +
           '</label>' +
-          '<button type="submit" class="submit' + (ready ? ' is-ready' : '') + '"' + (ready ? '' : ' disabled aria-disabled="true"') + '>Start my 30 days</button>' +
+          '<button type="submit" class="submit' + (ready && !state.submitting ? ' is-ready' : '') + '"' + (ready && !state.submitting ? '' : ' disabled aria-disabled="true"') + '>' + (state.submitting ? 'Sending request…' : 'Start my 30 days') + '</button>' +
+          (state.formError ? '<p class="form-error" role="alert">' + esc(state.formError) + '</p>' : '') +
           '<p class="form-micro">No credit card. Cancel anytime during the trial.</p>' +
         '</form>' +
       '</div>' +
@@ -1950,15 +1963,56 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
     }
   });
 
-  document.addEventListener('submit', function (e) {
+  document.addEventListener('submit', async function (e) {
     if (!e.target.classList.contains('form')) return;
     e.preventDefault();
     var ready = state.form.businessName.trim() !== '' && state.form.email.trim() !== '';
-    if (!ready) return;
-    if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
-    state.submitted = true;
+    if (!ready || state.submitting) return;
+
+    var query = new URLSearchParams(window.location.search);
+    var honeypot = e.target.querySelector('[name="website"]');
+    var payload = {
+      submissionId: state.submissionId,
+      businessName: state.form.businessName,
+      industry: state.form.industry,
+      monthlyVolume: state.form.monthlyVolume,
+      email: state.form.email,
+      funnel: state.funnel || '',
+      landingPath: window.location.pathname + window.location.search,
+      referrer: document.referrer || '',
+      utmSource: query.get('utm_source') || '',
+      utmMedium: query.get('utm_medium') || '',
+      utmCampaign: query.get('utm_campaign') || '',
+      utmTerm: query.get('utm_term') || '',
+      utmContent: query.get('utm_content') || '',
+      fbclid: query.get('fbclid') || '',
+      website: honeypot ? honeypot.value : ''
+    };
+
+    state.submitting = true;
+    state.formError = '';
     render();
-    window.scrollTo(0, 0);
+
+    try {
+      var response = await fetch(LEAD_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var result = await response.json().catch(function () { return {}; });
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || 'We could not submit your request. Please try again shortly.');
+      }
+      if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
+      state.submitted = true;
+      state.submitting = false;
+      render();
+      window.scrollTo(0, 0);
+    } catch (error) {
+      state.submitting = false;
+      state.formError = error && error.message ? error.message : 'We could not submit your request. Please try again shortly.';
+      render();
+    }
   });
 
   window.addEventListener('popstate', function () {
