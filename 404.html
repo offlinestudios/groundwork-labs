@@ -691,6 +691,8 @@ h1,h2,h3,p{margin:0;}
 .admin-table .lead-detail{color:var(--ink-muted);font-size:12px;line-height:1.45;max-width:230px;}
 .admin-select{font:inherit;color:var(--ink);border:1px solid var(--line-strong);border-radius:8px;background:#fff;padding:7px 28px 7px 9px;}
 .admin-status{font-size:12px;font-weight:700;}
+.admin-delete{appearance:none;border:0;background:transparent;color:#b42318;font:inherit;font-size:12px;font-weight:700;padding:7px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+.admin-delete:hover{color:#7a1510;}
 .admin-error{margin:16px 0 0;color:var(--danger-fg);font-size:13px;line-height:1.45;}
 .admin-empty{padding:34px;text-align:center;color:var(--ink-muted);}
 .admin-note{margin:0;color:var(--ink-muted);font-size:13px;line-height:1.55;}
@@ -1800,6 +1802,24 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
     }
   }
 
+  async function adminDeleteLead(id, businessName) {
+    var confirmed = window.confirm('Delete “' + businessName + '”? This permanently removes the lead, contact details, attribution data, and status history. This cannot be undone.');
+    if (!confirmed) return;
+    state.admin.error = '';
+    try {
+      var result = await adminRequest(ADMIN_API_URL + '/leads', {
+        method: 'DELETE',
+        headers: adminAuthHeaders(),
+        body: JSON.stringify({ id: id })
+      });
+      state.admin.leads = state.admin.leads.filter(function (lead) { return lead.id !== result.deletedId; });
+      render();
+    } catch (error) {
+      state.admin.error = error && error.message ? error.message : 'We could not delete this lead.';
+      render();
+    }
+  }
+
   function viewAdmin() {
     if (!state.admin.token) {
       return '' +
@@ -1837,6 +1857,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
         '<td><div class="lead-detail">' + esc(attribution) + '</div></td>' +
         '<td><div class="lead-detail">' + esc(lead.email_status || '—') + '<br>' + adminDate(lead.created_at) + '</div></td>' +
         '<td><select class="admin-select admin-status" data-admin-status data-lead-id="' + esc(lead.id) + '" aria-label="Update status for ' + esc(lead.business_name) + '">' + options + '</select></td>' +
+        '<td><button class="admin-delete" type="button" data-admin-delete data-lead-id="' + esc(lead.id) + '" data-lead-name="' + esc(lead.business_name) + '">Delete</button></td>' +
       '</tr>';
     }).join('');
 
@@ -1848,7 +1869,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
           '<div class="admin-summary">' + (counts || '<span class="admin-chip">No lead statuses yet</span>') + '</div>' +
           (state.admin.error ? '<p class="admin-error" role="alert">' + esc(state.admin.error) + '</p>' : '') +
           (state.admin.leads.length ?
-            '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Business</th><th>Profile</th><th>Request</th><th>Attribution</th><th>Captured</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table></div>' :
+            '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Business</th><th>Profile</th><th>Request</th><th>Attribution</th><th>Captured</th><th>Status</th><th>Actions</th></tr></thead><tbody>' + rows + '</tbody></table></div>' :
             '<div class="admin-empty">No trial requests have been captured yet.</div>') +
           '<p class="admin-note" style="margin-top:18px">Update a status as you contact and qualify each business. Customer and campaign data remain visible only in this protected workspace.</p>' +
         '</div>' +
@@ -2114,6 +2135,13 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
     if (adminLogoutButton) {
       e.preventDefault();
       adminLogout();
+      return;
+    }
+
+    var adminDeleteButton = e.target.closest('[data-admin-delete]');
+    if (adminDeleteButton) {
+      e.preventDefault();
+      adminDeleteLead(adminDeleteButton.getAttribute('data-lead-id'), adminDeleteButton.getAttribute('data-lead-name') || 'this lead');
       return;
     }
 

@@ -2,6 +2,7 @@ import { neon } from '@neondatabase/serverless';
 import { allowOrigin, authorize, parseBody } from './_auth.mjs';
 
 const STATUSES = new Set(['New', 'Contacted', 'Qualified', 'In progress', 'Converted', 'Closed']);
+const ALLOWED_METHODS = 'GET, PATCH, DELETE, OPTIONS';
 
 async function ensureSchema(sql) {
   await sql`
@@ -31,14 +32,20 @@ async function ensureSchema(sql) {
   `;
 }
 
+function leadFields(sql, query) {
+  return sql(query);
+}
+
 export default async function handler(request, response) {
   const origin = request.headers.origin;
   if (request.method === 'OPTIONS') {
-    if (!allowOrigin(origin, response, 'GET, PATCH, OPTIONS')) return;
+    if (!allowOrigin(origin, response, ALLOWED_METHODS)) return;
     return response.status(204).end();
   }
-  if (!['GET', 'PATCH'].includes(request.method)) return response.status(405).json({ ok: false, error: 'Method not allowed.' });
-  if (!allowOrigin(origin, response, 'GET, PATCH, OPTIONS')) return;
+  if (!['GET', 'PATCH', 'DELETE'].includes(request.method)) {
+    return response.status(405).json({ ok: false, error: 'Method not allowed.' });
+  }
+  if (!allowOrigin(origin, response, ALLOWED_METHODS)) return;
   if (!authorize(request, response)) return;
 
   try {
@@ -59,8 +66,20 @@ export default async function handler(request, response) {
 
     const body = parseBody(request.body);
     const leadId = body && typeof body.id === 'string' ? body.id : '';
+    if (!leadId) return response.status(400).json({ ok: false, error: 'Lead ID is required.' });
+
+    if (request.method === 'DELETE') {
+      const deleted = await sql`
+        DELETE FROM leads
+        WHERE id = ${leadId}
+        RETURNING id, business_name
+      `;
+      if (!deleted.length) return response.status(404).json({ ok: false, error: 'Lead not found.' });
+      return response.status(200).json({ ok: true, deletedId: deleted[0].id, deletedBusinessName: deleted[0].business_name });
+    }
+
     const status = body && typeof body.status === 'string' ? body.status : '';
-    if (!leadId || !STATUSES.has(status)) return response.status(400).json({ ok: false, error: 'Please select a valid lead status.' });
+    if (!STATUSES.has(status)) return response.status(400).json({ ok: false, error: 'Please select a valid lead status.' });
 
     const updated = await sql`
       UPDATE leads
@@ -74,6 +93,6 @@ export default async function handler(request, response) {
     return response.status(200).json({ ok: true, lead: updated[0] });
   } catch (error) {
     console.error('Admin lead request failed.', error instanceof Error ? error.message : 'Unknown error');
-    return response.status(500).json({ ok: false, error: 'We could not load or update leads. Please try again.' });
+    return response.status(500).json({ ok: false, error: 'We could not manage leads. Please try again.' });
   }
 }
