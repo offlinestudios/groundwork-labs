@@ -676,6 +676,7 @@ h1,h2,h3,p{margin:0;}
 .admin-login-card{max-width:460px;margin:64px auto;}
 .admin-login-card h1{margin:8px 0 10px;font-size:30px;letter-spacing:-.03em;}
 .admin-login-card .field{margin-top:20px;}
+.admin-login-card .btn{display:inline-flex;margin-top:14px;}
 .admin-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .admin-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
 .admin-chip{border:1px solid var(--line);background:var(--surface-soft);border-radius:999px;padding:7px 11px;font-size:12px;color:var(--ink-muted);}
@@ -1760,6 +1761,8 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
       state.admin.expiresAt = result.expiresAt || 0;
       state.admin.loaded = false;
       try { window.sessionStorage.setItem('groundwork_admin_token', result.token); } catch (_) {}
+      // Release the login state before loading records; otherwise loadAdminLeads exits early.
+      state.admin.loading = false;
       await loadAdminLeads();
     } catch (error) {
       state.admin.loading = false;
