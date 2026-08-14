@@ -688,6 +688,7 @@ h1,h2,h3,p{margin:0;}
 .admin-table tbody tr:last-child td{border-bottom:0;}
 .admin-table .lead-name{font-weight:700;display:block;margin-bottom:3px;}
 .admin-table .lead-email{color:var(--ink-muted);font-size:12px;}
+.admin-table .lead-contact{display:block;color:var(--ink-soft);font-size:12px;margin-bottom:2px;}
 .admin-table .lead-link{display:inline-block;margin-top:4px;color:var(--green);font-size:12px;line-height:1.35;overflow-wrap:anywhere;}
 .admin-table .lead-detail{color:var(--ink-muted);font-size:12px;line-height:1.45;max-width:230px;}
 .admin-select{font:inherit;color:var(--ink);border:1px solid var(--line-strong);border-radius:8px;background:#fff;padding:7px 28px 7px 9px;}
@@ -1208,7 +1209,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
     screen: 'home',      // home | funnel | signup | dashboard
     funnel: 'reviews',
     menuOpen: false,
-    form: { businessName: '', businessWebsite: '', industry: '', monthlyVolume: '', email: '' },
+    form: { contactName: '', businessName: '', businessWebsite: '', industry: '', monthlyVolume: '', email: '' },
     submitted: false,
     submitting: false,
     formError: '',
@@ -1572,7 +1573,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
   function viewSignup() {
     var f = FUNNELS[state.funnel];
     var v = state.form;
-    var ready = v.businessName.trim() !== '' && v.email.trim() !== '';
+    var ready = v.contactName.trim() !== '' && v.businessName.trim() !== '' && v.email.trim() !== '';
 
     var head = '' +
       '<button class="signup-brand" type="button" data-go="funnel" data-funnel="' + esc(f.slug) + '" aria-label="Back to ' + esc(f.slug) + '">' +
@@ -1585,7 +1586,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
       '<div class="screen"><div class="signup"><div class="signup-col">' + head +
         '<div class="confirm-card">' +
           '<div class="confirm-check" aria-hidden="true">\u2713</div>' +
-          '<h1>You\u2019re in, ' + esc(v.businessName.trim() || 'friend') + '.</h1>' +
+          '<h1>You\u2019re in, ' + esc(v.contactName.trim() || 'there') + '.</h1>' +
           '<p class="body-sm">We\u2019ll email you within one business day to connect your review flow. Day 1 of your 30 starts when the mechanism is live \u2014 not before.</p>' +
           '<div class="next-panel">' +
             '<span class="eyebrow-quiet">What happens next</span>' +
@@ -1615,6 +1616,9 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
         '<h1>Start your 30-day trial</h1>' +
         '<p class="body-sm">A few questions. We\u2019ll reach out within one business day to discuss the right starting point.</p>' +
         '<form class="form" novalidate>' +
+          '<label class="field">Your name' +
+            '<input type="text" name="contactName" value="' + esc(v.contactName) + '" placeholder="e.g. Jamie Smith" autocomplete="name">' +
+          '</label>' +
           '<label class="field">Business name' +
             '<input type="text" name="businessName" value="' + esc(v.businessName) + '" placeholder="e.g. Northside Auto Care" autocomplete="organization">' +
           '</label>' +
@@ -1855,7 +1859,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
       }).join('');
       var attribution = [lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ') || 'Direct / not supplied';
       return '<tr>' +
-        '<td><span class="lead-name">' + esc(lead.business_name) + '</span><span class="lead-email">' + esc(lead.contact_email) + '</span></td>' +
+        '<td><span class="lead-name">' + esc(lead.business_name) + '</span>' + (lead.contact_name ? '<span class="lead-contact">' + esc(lead.contact_name) + '</span>' : '') + '<span class="lead-email">' + esc(lead.contact_email) + '</span></td>' +
         '<td><div class="lead-detail">' + esc(lead.industry || '—') + '<br>' + esc(lead.monthly_volume || '—') + (lead.business_website ? '<br><a class="lead-link" href="' + esc(lead.business_website) + '" target="_blank" rel="noopener noreferrer">' + esc(lead.business_website) + '</a>' : '') + '</div></td>' +
         '<td><div class="lead-detail">' + esc(lead.funnel || 'General trial') + '<br>' + esc(lead.landing_path || '—') + '</div></td>' +
         '<td><div class="lead-detail">' + esc(attribution) + '</div></td>' +
@@ -2220,7 +2224,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
       // so the field keeps focus and the caret position.
       var btn = document.querySelector('.submit');
       if (btn) {
-        var ready = state.form.businessName.trim() !== '' && state.form.email.trim() !== '';
+        var ready = state.form.contactName.trim() !== '' && state.form.businessName.trim() !== '' && state.form.email.trim() !== '';
         btn.classList.toggle('is-ready', ready);
         btn.disabled = !ready;
         btn.setAttribute('aria-disabled', ready ? 'false' : 'true');
@@ -2243,13 +2247,14 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
   document.addEventListener('submit', async function (e) {
     if (!e.target.classList.contains('form')) return;
     e.preventDefault();
-    var ready = state.form.businessName.trim() !== '' && state.form.email.trim() !== '';
+    var ready = state.form.contactName.trim() !== '' && state.form.businessName.trim() !== '' && state.form.email.trim() !== '';
     if (!ready || state.submitting) return;
 
     var query = new URLSearchParams(window.location.search);
     var honeypot = e.target.querySelector('[name="website"]');
     var payload = {
       submissionId: state.submissionId,
+      contactName: state.form.contactName,
       businessName: state.form.businessName,
       businessWebsite: state.form.businessWebsite,
       industry: state.form.industry,
