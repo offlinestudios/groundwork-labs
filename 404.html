@@ -688,6 +688,7 @@ h1,h2,h3,p{margin:0;}
 .admin-table tbody tr:last-child td{border-bottom:0;}
 .admin-table .lead-name{font-weight:700;display:block;margin-bottom:3px;}
 .admin-table .lead-email{color:var(--ink-muted);font-size:12px;}
+.admin-table .lead-link{display:inline-block;margin-top:4px;color:var(--green);font-size:12px;line-height:1.35;overflow-wrap:anywhere;}
 .admin-table .lead-detail{color:var(--ink-muted);font-size:12px;line-height:1.45;max-width:230px;}
 .admin-select{font:inherit;color:var(--ink);border:1px solid var(--line-strong);border-radius:8px;background:#fff;padding:7px 28px 7px 9px;}
 .admin-status{font-size:12px;font-weight:700;}
@@ -1142,7 +1143,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
     { n: '03', h: 'See the number', p: 'Day 30: exactly how many reviews, recovered calls, or kept appointments the mechanism generated. Then you decide.' }
   ];
 
-  var INDUSTRIES = ['Auto shop', 'Salon / barber', 'Dental practice', 'HVAC / trades', 'Restaurant', 'Other local business'];
+  var INDUSTRIES = ['Auto shop', 'Salon / barber', 'Dental practice', 'Health / wellness', 'HVAC / trades', 'Home services', 'Restaurant / café', 'Pet services', 'Professional services', 'Other local business'];
   var VOLUMES = ['Under 50', '50\u2013150', '150\u2013400', '400+'];
 
   /* Dashboard data — in production this comes from the backend. */
@@ -1207,7 +1208,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
     screen: 'home',      // home | funnel | signup | dashboard
     funnel: 'reviews',
     menuOpen: false,
-    form: { businessName: '', industry: '', monthlyVolume: '', email: '' },
+    form: { businessName: '', businessWebsite: '', industry: '', monthlyVolume: '', email: '' },
     submitted: false,
     submitting: false,
     formError: '',
@@ -1612,12 +1613,15 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
     '<div class="screen"><div class="signup"><div class="signup-col">' + head +
       '<div class="signup-card">' +
         '<h1>Start your 30-day trial</h1>' +
-        '<p class="body-sm">Three questions. We\u2019ll reach out within one business day to connect your systems.</p>' +
+        '<p class="body-sm">A few questions. We\u2019ll reach out within one business day to discuss the right starting point.</p>' +
         '<form class="form" novalidate>' +
           '<label class="field">Business name' +
             '<input type="text" name="businessName" value="' + esc(v.businessName) + '" placeholder="e.g. Northside Auto Care" autocomplete="organization">' +
           '</label>' +
           '<input class="sr-only" type="text" name="website" value="" autocomplete="off" tabindex="-1" aria-hidden="true">' +
+          '<label class="field">Business website <span class="field-optional">(optional)</span>' +
+            '<input type="url" name="businessWebsite" value="' + esc(v.businessWebsite) + '" placeholder="https://yourbusiness.com" autocomplete="url">' +
+          '</label>' +
           '<label class="field">What kind of business?' +
             '<select name="industry">' + industryOpts + '</select>' +
           '</label>' +
@@ -1852,7 +1856,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
       var attribution = [lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ') || 'Direct / not supplied';
       return '<tr>' +
         '<td><span class="lead-name">' + esc(lead.business_name) + '</span><span class="lead-email">' + esc(lead.contact_email) + '</span></td>' +
-        '<td><div class="lead-detail">' + esc(lead.industry || '—') + '<br>' + esc(lead.monthly_volume || '—') + '</div></td>' +
+        '<td><div class="lead-detail">' + esc(lead.industry || '—') + '<br>' + esc(lead.monthly_volume || '—') + (lead.business_website ? '<br><a class="lead-link" href="' + esc(lead.business_website) + '" target="_blank" rel="noopener noreferrer">' + esc(lead.business_website) + '</a>' : '') + '</div></td>' +
         '<td><div class="lead-detail">' + esc(lead.funnel || 'General trial') + '<br>' + esc(lead.landing_path || '—') + '</div></td>' +
         '<td><div class="lead-detail">' + esc(attribution) + '</div></td>' +
         '<td><div class="lead-detail">' + esc(lead.email_status || '—') + '<br>' + adminDate(lead.created_at) + '</div></td>' +
@@ -2247,6 +2251,7 @@ src="https://www.facebook.com/tr?id=1407281814917336&ev=PageView&noscript=1"
     var payload = {
       submissionId: state.submissionId,
       businessName: state.form.businessName,
+      businessWebsite: state.form.businessWebsite,
       industry: state.form.industry,
       monthlyVolume: state.form.monthlyVolume,
       email: state.form.email,

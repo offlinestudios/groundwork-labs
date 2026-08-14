@@ -12,6 +12,7 @@ async function ensureSchema(sql) {
       business_name TEXT NOT NULL,
       contact_email TEXT NOT NULL,
       industry TEXT,
+      business_website TEXT,
       monthly_volume TEXT,
       funnel TEXT,
       landing_path TEXT,
@@ -30,6 +31,7 @@ async function ensureSchema(sql) {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `;
+  await sql`ALTER TABLE leads ADD COLUMN IF NOT EXISTS business_website TEXT`;
 }
 
 function leadFields(sql, query) {
@@ -54,7 +56,7 @@ export default async function handler(request, response) {
 
     if (request.method === 'GET') {
       const leads = await sql`
-        SELECT id, business_name, contact_email, industry, monthly_volume, funnel,
+        SELECT id, business_name, contact_email, industry, business_website, monthly_volume, funnel,
                landing_path, referrer, utm_source, utm_medium, utm_campaign,
                utm_term, utm_content, fbclid, status, email_status, created_at, updated_at
         FROM leads
@@ -85,7 +87,7 @@ export default async function handler(request, response) {
       UPDATE leads
       SET status = ${status}, updated_at = NOW()
       WHERE id = ${leadId}
-      RETURNING id, business_name, contact_email, industry, monthly_volume, funnel,
+      RETURNING id, business_name, contact_email, industry, business_website, monthly_volume, funnel,
                 landing_path, referrer, utm_source, utm_medium, utm_campaign,
                 utm_term, utm_content, fbclid, status, email_status, created_at, updated_at
     `;
